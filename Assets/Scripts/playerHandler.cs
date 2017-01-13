@@ -56,10 +56,16 @@ public class playerHandler : MonoBehaviour {
 
 	private float BezierTime = 0;
 
+	//Audio Files
+	public AudioClip jump;
+	public AudioClip fall;
+	AudioSource audioMain;
+
 	// Use this for initialization
 	void Start () {
 		Instance = this;
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
+		audioMain = GetComponent<AudioSource> ();
 
 		currentTile = 5;
 		currentRow = 3;
@@ -100,6 +106,7 @@ public class playerHandler : MonoBehaviour {
 			if (isEnding == false) {//if the game isnt currently ending
 				if (Input.GetKeyDown (KeyCode.Q)) { //moving up and left
 					if (upLeftMoveEnabled == true) {
+						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 1; //int for reseting to proper idle sprite after jump is done
 						mainSprite.sprite = topLeftJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -118,6 +125,7 @@ public class playerHandler : MonoBehaviour {
 
 						CheckTileMovement (); //checking what tiles the player is able to jump too
 					} else {
+						audioMain.PlayOneShot (fall, 0.7f);
 						jumpFace = 1;
 						mainSprite.sprite = topLeftJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -135,6 +143,7 @@ public class playerHandler : MonoBehaviour {
 				}
 				if (Input.GetKeyDown (KeyCode.E)) { //moving up and right
 					if (upRightMoveEnabled == true) {
+						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 2;
 						mainSprite.sprite = topRightJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -153,6 +162,7 @@ public class playerHandler : MonoBehaviour {
 
 						CheckTileMovement ();
 					} else {
+						audioMain.PlayOneShot (fall, 0.7f);
 						jumpFace = 2;
 						mainSprite.sprite = topRightJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -170,6 +180,7 @@ public class playerHandler : MonoBehaviour {
 				}
 				if (Input.GetKeyDown (KeyCode.Z)) { //moving down and left
 					if (downLeftMoveEnabled == true) {
+						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 3;
 						mainSprite.sprite = botLeftJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -188,6 +199,7 @@ public class playerHandler : MonoBehaviour {
 
 						CheckTileMovement ();
 					} else {
+						audioMain.PlayOneShot (fall, 0.7f);
 						jumpFace = 3;
 						mainSprite.sprite = botLeftJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -205,6 +217,7 @@ public class playerHandler : MonoBehaviour {
 				}
 				if (Input.GetKeyDown (KeyCode.C)) { //moving down and right
 					if (downRightMoveEnabled == true) {
+						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 4;
 						mainSprite.sprite = botRightJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -223,7 +236,8 @@ public class playerHandler : MonoBehaviour {
 
 						CheckTileMovement ();
 					} else {
-						jumpFace = 3;
+						audioMain.PlayOneShot (fall, 0.7f);
+						jumpFace = 4;
 						mainSprite.sprite = botRightJump;
 						startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 						startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
