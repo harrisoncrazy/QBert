@@ -46,80 +46,62 @@ public class redBall : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerHandler.Instance.isEnding == false) {
-			if (bouncingStarted == false) { //falling down to the first point on the grid
-				transform.position = Vector3.MoveTowards (transform.position, GameObject.Find ("tile" + currentTile + "Base").transform.position, 2f * Time.deltaTime); //moving towards the point
+			if (playerHandler.Instance.isFalling == false) {
+				if (bouncingStarted == false) { //falling down to the first point on the grid
+					transform.position = Vector3.MoveTowards (transform.position, GameObject.Find ("tile" + currentTile + "Base").transform.position, 2f * Time.deltaTime); //moving towards the point
 
-				if (transform.position.y <= GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f) {//reaching the point
-					transform.position = new Vector3 (GameObject.Find ("tile" + currentTile + "Base").transform.position.x, GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f, 0); //setting exact point
-					mainSprite.sprite = BallHit; //changing sprite
-					bouncingStarted = true;//starting bounce
-					StartCoroutine ("ballDelay");
-				}
-			}
-
-			if (bouncingStarted == true) {
-				int rando = Random.Range (0, 3);
-				if (isMoving == true) {
-					curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
-					curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
-					transform.position = new Vector3 (curveX, curveY, 0);
-
-					BezierTime = BezierTime + Time.deltaTime * 1f;
-
-					if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-						mainSprite.sprite = BallHit;
-					}
-
-					if (BezierTime >= 1) { //end of the jump
-						BezierTime = 0;
-						isMoving = false;
+					if (transform.position.y <= GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f) {//reaching the point
+						transform.position = new Vector3 (GameObject.Find ("tile" + currentTile + "Base").transform.position.x, GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f, 0); //setting exact point
+						mainSprite.sprite = BallHit; //changing sprite
+						bouncingStarted = true;//starting bounce
 						StartCoroutine ("ballDelay");
-						transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
 					}
 				}
-				if (isMoving == false) {
-					if (ballDelayed == false) {
-						if (rando == 1) {
-							if (downLeftMoveEnabled == true) { //moving down and left
-								if (atEnd == false) {
-									mainSprite.sprite = BallJump;
-									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-									controlPointX = startPointX;
-									controlPointY = startPointY + 0.25f;
+				if (bouncingStarted == true) {
+					int rando = Random.Range (0, 3);
+					if (isMoving == true) {
+						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
+						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
+						transform.position = new Vector3 (curveX, curveY, 0);
 
-									currentTile = currentTile + currentRow;
-									currentRow++;
+						BezierTime = BezierTime + Time.deltaTime * 1f;
 
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-									isMoving = true;
-									ballDelayed = true;
-
-									CheckTileMovement ();
-								}
-							} else if (atEnd == true) {
-								mainSprite.sprite = BallJump;
-								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-								controlPointX = startPointX;
-								controlPointY = startPointY + 0.25f;
-
-								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f;
-								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
-
-								isMoving = true;
-								ballDelayed = true;
-								StartCoroutine ("deleteSelf");
-							}
+						if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
+							mainSprite.sprite = BallHit;
 						}
 
-						if (rando == 2) {
-							if (downRightMoveEnabled == true) { //moving down and right
-								if (atEnd == false) {
+						if (BezierTime >= 1) { //end of the jump
+							BezierTime = 0;
+							isMoving = false;
+							StartCoroutine ("ballDelay");
+							transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+						}
+					}
+					if (isMoving == false) {
+						if (ballDelayed == false) {
+							if (rando == 1) {
+								if (downLeftMoveEnabled == true) { //moving down and left
+									if (atEnd == false) {
+										mainSprite.sprite = BallJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+										controlPointX = startPointX;
+										controlPointY = startPointY + 0.25f;
+
+										currentTile = currentTile + currentRow;
+										currentRow++;
+
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+										isMoving = true;
+										ballDelayed = true;
+
+										CheckTileMovement ();
+									}
+								} else if (atEnd == true) {
 									mainSprite.sprite = BallJump;
 									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -127,31 +109,51 @@ public class redBall : MonoBehaviour {
 									controlPointX = startPointX;
 									controlPointY = startPointY + 0.25f;
 
-									currentTile = currentTile + currentRow + 1;
-									currentRow++;
-
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f;
+									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
 
 									isMoving = true;
 									ballDelayed = true;
-
-									CheckTileMovement ();
+									StartCoroutine ("deleteSelf");
 								}
-							} else if (atEnd == true) {
-								mainSprite.sprite = BallJump;
-								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+							}
 
-								controlPointX = startPointX;
-								controlPointY = startPointY + 0.25f;
+							if (rando == 2) {
+								if (downRightMoveEnabled == true) { //moving down and right
+									if (atEnd == false) {
+										mainSprite.sprite = BallJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f;
-								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
+										controlPointX = startPointX;
+										controlPointY = startPointY + 0.25f;
 
-								isMoving = true;
-								ballDelayed = true;
-								StartCoroutine ("deleteSelf");
+										currentTile = currentTile + currentRow + 1;
+										currentRow++;
+
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+										isMoving = true;
+										ballDelayed = true;
+
+										CheckTileMovement ();
+									}
+								} else if (atEnd == true) {
+									mainSprite.sprite = BallJump;
+									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+									controlPointX = startPointX;
+									controlPointY = startPointY + 0.25f;
+
+									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f;
+									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
+
+									isMoving = true;
+									ballDelayed = true;
+									StartCoroutine ("deleteSelf");
+								}
 							}
 						}
 					}

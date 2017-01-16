@@ -9,6 +9,7 @@ public class playerHandler : MonoBehaviour {
 
 	public int totalConvertedTiles = 0;
 
+	public bool isFalling = false;
 	public bool isEnding = false;
 	public bool isWinning = false;
 
@@ -82,23 +83,32 @@ public class playerHandler : MonoBehaviour {
 
 				BezierTime = BezierTime + Time.deltaTime * 2f;
 
-				if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-					if (jumpFace == 1) {
-						mainSprite.sprite = topLeftIdle;
-					} else if (jumpFace == 2) {
-						mainSprite.sprite = topRightIdle;
-					} else if (jumpFace == 3) {
-						mainSprite.sprite = botLeftIdle;
-					} else if (jumpFace == 4) {
-						mainSprite.sprite = botRightIdle;
+
+				if (isFalling == false) {
+					if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
+						if (jumpFace == 1) {
+							mainSprite.sprite = topLeftIdle;
+						} else if (jumpFace == 2) {
+							mainSprite.sprite = topRightIdle;
+						} else if (jumpFace == 3) {
+							mainSprite.sprite = botLeftIdle;
+						} else if (jumpFace == 4) {
+							mainSprite.sprite = botRightIdle;
+						}
+					}
+
+					if (BezierTime >= 1) { //end of the jump
+						BezierTime = 0;
+						isMoving = false;
+						transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+						GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 					}
 				}
 
-				if (BezierTime >= 1) { //end of the jump
-					BezierTime = 0;
-					isMoving = false;
-					transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
-					GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
+				if (isFalling == true) {
+					if (BezierTime >= 1) {
+						transform.position = Vector3.MoveTowards (transform.position,new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
+					}
 				}
 			}
 		}
@@ -138,6 +148,7 @@ public class playerHandler : MonoBehaviour {
 						endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
 						mainSprite.sortingOrder = currentRow;
 						isMoving = true;
+						isFalling = true;
 						StartCoroutine ("EndGame");
 					}
 				}
@@ -175,6 +186,7 @@ public class playerHandler : MonoBehaviour {
 						endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
 						mainSprite.sortingOrder = currentRow;
 						isMoving = true;
+						isFalling = true;
 						StartCoroutine ("EndGame");
 					}
 				}
@@ -212,6 +224,7 @@ public class playerHandler : MonoBehaviour {
 						endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
 						mainSprite.sortingOrder = currentRow + 1;
 						isMoving = true;
+						isFalling = true;
 						StartCoroutine ("EndGame");
 					}
 				}
@@ -249,6 +262,7 @@ public class playerHandler : MonoBehaviour {
 						endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
 						mainSprite.sortingOrder = currentRow + 1;
 						isMoving = true;
+						isFalling = true;
 						StartCoroutine ("EndGame");
 					}
 				} 
