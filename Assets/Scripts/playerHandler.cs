@@ -88,37 +88,39 @@ public class playerHandler : MonoBehaviour {
 		if (inputDelay == false) {
 			if (isMoving == true) { //bezier curve for movement
 				if (isEnding == false) {
-					curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
-					curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
-					transform.position = new Vector3 (curveX, curveY, 0);
+					if (startingTeleport != true) {
+						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
+						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
+						transform.position = new Vector3 (curveX, curveY, 0);
 
-					BezierTime = BezierTime + Time.deltaTime * 2f;
+						BezierTime = BezierTime + Time.deltaTime * 2f;
 
-					if (isAtTeleporter != true) {
-						if (isFalling == false) {
-							if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-								if (jumpFace == 1) {
-									mainSprite.sprite = topLeftIdle;
-								} else if (jumpFace == 2) {
-									mainSprite.sprite = topRightIdle;
-								} else if (jumpFace == 3) {
-									mainSprite.sprite = botLeftIdle;
-								} else if (jumpFace == 4) {
-									mainSprite.sprite = botRightIdle;
+						if (isAtTeleporter != true) {
+							if (isFalling == false) {
+								if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
+									if (jumpFace == 1) {
+										mainSprite.sprite = topLeftIdle;
+									} else if (jumpFace == 2) {
+										mainSprite.sprite = topRightIdle;
+									} else if (jumpFace == 3) {
+										mainSprite.sprite = botLeftIdle;
+									} else if (jumpFace == 4) {
+										mainSprite.sprite = botRightIdle;
+									}
+								}
+
+								if (BezierTime >= 1) { //end of the jump
+									BezierTime = 0;
+									isMoving = false;
+									transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+									GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 								}
 							}
 
-							if (BezierTime >= 1) { //end of the jump
-								BezierTime = 0;
-								isMoving = false;
-								transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
-								GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
-							}
-						}
-
-						if (isFalling == true) {
-							if (BezierTime >= 1) {
-								transform.position = Vector3.MoveTowards (transform.position, new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
+							if (isFalling == true) {
+								if (BezierTime >= 1) {
+									transform.position = Vector3.MoveTowards (transform.position, new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
+								}
 							}
 						}
 					}
@@ -130,16 +132,16 @@ public class playerHandler : MonoBehaviour {
 							}
 						}
 						if (stoppedTeleport == true) {
-							transform.position = new Vector3 (topTile.position.x, topTile.position.y + 0.15f); //falling down
+							transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.15f), 1f * Time.deltaTime); //falling down
 							if (transform.position == new Vector3 (topTile.position.x, topTile.position.y + 0.15f)) {//once fallen down to the tile, ending the teleport sequence
 								startingTeleport = false;
 								stoppedTeleport = false;
 								isAtTeleporter = false;
 								isMoving = false;
-								mainSprite.sortingOrder = 1;
+								mainSprite.sortingOrder = 2;
 								BezierTime = 0;
-								TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0;
-								GameObject.Destroy (teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber));
+								TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0; //destroying the teleport in the array
+								GameObject.Destroy (teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber)); //destroying the teleporter gameobject
 								GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 							}
 						}
