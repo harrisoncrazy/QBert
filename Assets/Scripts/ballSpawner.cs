@@ -24,34 +24,36 @@ public class ballSpawner : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerHandler.Instance.isEnding == false) {
-			realSpawnDelay -= Time.deltaTime;
+			if (playerHandler.Instance.isFalling == false) {
+				realSpawnDelay -= Time.deltaTime;
 
-			if (realSpawnDelay <= 0) {
-				int rando = Random.Range (1, 3);
-				if (rando == 1) {
-					redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
-					ball.transform.position = new Vector3 (-0.15f, 0.6f);
-					ball.currentTile = 2;
-					ball.currentRow = 2;
-					realSpawnDelay = spawnDelay;
-					cooldownRedCounter++;
-					if (cooldownRedCounter == 3) {
-						//spawnDelay -= 0.5f;
-						cooldownRedCounter = 0;
+				if (realSpawnDelay <= 0) {
+					int rando = Random.Range (1, 3);
+					if (rando == 1) {
+						redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
+						ball.transform.position = new Vector3 (-0.15f, 0.6f);
+						ball.currentTile = 2;
+						ball.currentRow = 2;
+						realSpawnDelay = spawnDelay;
+						cooldownRedCounter++;
+						if (cooldownRedCounter == 3) {
+							//spawnDelay -= 0.5f;
+							cooldownRedCounter = 0;
+						}
+					} else if (rando == 2) {
+						redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
+						ball.transform.position = new Vector3 (0.15f, 0.6f);
+						ball.currentTile = 3;
+						ball.currentRow = 2;
+						realSpawnDelay = spawnDelay;
+						cooldownRedCounter++;
+						if (cooldownRedCounter == 3) {
+							//spawnDelay -= 0.5f;
+							cooldownRedCounter = 0;
+						}
 					}
-				} else if (rando == 2) {
-					redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
-					ball.transform.position = new Vector3 (0.15f, 0.6f);
-					ball.currentTile = 3;
-					ball.currentRow = 2;
-					realSpawnDelay = spawnDelay;
-					cooldownRedCounter++;
-					if (cooldownRedCounter == 3) {
-						//spawnDelay -= 0.5f;
-						cooldownRedCounter = 0;
-					}
-				}
 			
+				}
 			}
 		}
 	}

@@ -32,13 +32,7 @@ public class playerHandler : MonoBehaviour {
 
 	public int currentTile;
 
-
-	//movement bools
-	private bool upLeftMoveEnabled = true;
-	private bool upRightMoveEnabled = true;
-	private bool downLeftMoveEnabled = true;
-	private bool downRightMoveEnabled = true;
-
+	private TileListCheck.movementIndex movementTest;//movement index, refers to an outside script which automatically checks tile routs
 
 	//Bezier Curve Variables
 	private bool isMoving = false;
@@ -60,6 +54,7 @@ public class playerHandler : MonoBehaviour {
 	//Audio Files
 	public AudioClip jump;
 	public AudioClip fall;
+	public AudioClip endMusic;
 	AudioSource audioMain;
 
 	// Use this for initialization
@@ -67,6 +62,7 @@ public class playerHandler : MonoBehaviour {
 		Instance = this;
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
 		audioMain = GetComponent<AudioSource> ();
+		movementTest = new TileListCheck.movementIndex();
 
 		currentTile = 5;
 		currentRow = 3;
@@ -115,7 +111,7 @@ public class playerHandler : MonoBehaviour {
 		if (isMoving == false) { //if the tile isnt currently moving 
 			if (isEnding == false) {//if the game isnt currently ending
 				if (Input.GetKeyDown (KeyCode.Q)) { //moving up and left
-					if (upLeftMoveEnabled == true) {
+					if (movementTest.upLeftMoveEnabled == true) {
 						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 1; //int for reseting to proper idle sprite after jump is done
 						mainSprite.sprite = topLeftJump;
@@ -153,7 +149,7 @@ public class playerHandler : MonoBehaviour {
 					}
 				}
 				if (Input.GetKeyDown (KeyCode.E)) { //moving up and right
-					if (upRightMoveEnabled == true) {
+					if (movementTest.upRightMoveEnabled == true) {
 						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 2;
 						mainSprite.sprite = topRightJump;
@@ -191,7 +187,7 @@ public class playerHandler : MonoBehaviour {
 					}
 				}
 				if (Input.GetKeyDown (KeyCode.Z)) { //moving down and left
-					if (downLeftMoveEnabled == true) {
+					if (movementTest.downLeftMoveEnabled == true) {
 						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 3;
 						mainSprite.sprite = botLeftJump;
@@ -229,7 +225,7 @@ public class playerHandler : MonoBehaviour {
 					}
 				}
 				if (Input.GetKeyDown (KeyCode.C)) { //moving down and right
-					if (downRightMoveEnabled == true) {
+					if (movementTest.downRightMoveEnabled == true) {
 						audioMain.PlayOneShot (jump, 0.7f);
 						jumpFace = 4;
 						mainSprite.sprite = botRightJump;
@@ -270,9 +266,12 @@ public class playerHandler : MonoBehaviour {
 		}
 
 		if (totalConvertedTiles == 28) { //ending!
-			isEnding = true;
-			isWinning = true;
-			StartCoroutine ("EndGame");
+			if (isWinning == false) {
+				isEnding = true;
+				isWinning = true;
+				audioMain.PlayOneShot (endMusic, 0.7f);
+				StartCoroutine ("EndGame");
+			}
 		}
 	}
 
@@ -286,176 +285,7 @@ public class playerHandler : MonoBehaviour {
 		SceneManager.LoadScene ("level1");
 	}
 
-	void CheckTileMovement() {
-		switch (currentTile) {
-		case 1:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 2:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 3:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 4:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 5:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 6:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 7:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 8:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 9:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 10:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 11:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 12:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 13:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 14:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 15:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 16:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 17:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 18:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 19:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 20:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 21:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 22:
-			upLeftMoveEnabled = false;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 23:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 24:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 25:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 26:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 27:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = true;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		case 28:
-			upLeftMoveEnabled = true;
-			upRightMoveEnabled = false;
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			break;
-		}
+	void CheckTileMovement(){
+		movementTest = TileListCheck.Instance.CheckTileMovement (currentTile);
 	}
 }

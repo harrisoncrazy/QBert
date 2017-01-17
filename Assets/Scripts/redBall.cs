@@ -13,10 +13,9 @@ public class redBall : MonoBehaviour {
 
 	public int currentTile;
 
-	private bool bouncingStarted = false;
+	private TileListCheck.movementIndex movementTest;//movement index, refers to an outside script which automatically checks tile routs
 
-	private bool downLeftMoveEnabled = true;
-	private bool downRightMoveEnabled = true;
+	private bool bouncingStarted = false;
 
 	//Bezier Curve Variables
 	private bool isMoving = false;
@@ -38,9 +37,15 @@ public class redBall : MonoBehaviour {
 
 	private bool atEnd = false;
 
+	public AudioClip jump;
+	AudioSource audioMain;
+
 	// Use this for initialization
 	void Start () {
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
+		audioMain = GetComponent<AudioSource> ();
+
+		movementTest = new TileListCheck.movementIndex();
 	}
 
 	// Update is called once per frame
@@ -54,13 +59,14 @@ public class redBall : MonoBehaviour {
 						transform.position = new Vector3 (GameObject.Find ("tile" + currentTile + "Base").transform.position.x, GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f, 0); //setting exact point
 						mainSprite.sprite = BallHit; //changing sprite
 						bouncingStarted = true;//starting bounce
+						CheckTileMovement();
 						StartCoroutine ("ballDelay");
 					}
 				}
 
 				if (bouncingStarted == true) {
 					int rando = Random.Range (0, 3);
-					if (isMoving == true) {
+					if (isMoving == true) {//bezier curve for jumping from tile to tile
 						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
 						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
 						transform.position = new Vector3 (curveX, curveY, 0);
@@ -75,14 +81,15 @@ public class redBall : MonoBehaviour {
 							BezierTime = 0;
 							isMoving = false;
 							StartCoroutine ("ballDelay");
-							transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+							transform.position = new Vector3 (endPointX, endPointY, 0); //setting the ball to an exact final value
 						}
 					}
-					if (isMoving == false) {
-						if (ballDelayed == false) {
+					if (isMoving == false) {//if not currently moving tiles
+						if (ballDelayed == false) { //if falling has finished
 							if (rando == 1) {
-								if (downLeftMoveEnabled == true) { //moving down and left
+								if (movementTest.downLeftMoveEnabled == true) { //moving down and left
 									if (atEnd == false) {
+										audioMain.PlayOneShot (jump, 0.7f);
 										mainSprite.sprite = BallJump;
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -119,8 +126,9 @@ public class redBall : MonoBehaviour {
 							}
 
 							if (rando == 2) {
-								if (downRightMoveEnabled == true) { //moving down and right
+								if (movementTest.downRightMoveEnabled == true) { //moving down and right
 									if (atEnd == false) {
+										audioMain.PlayOneShot (jump, 0.7f);
 										mainSprite.sprite = BallJump;
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -173,126 +181,9 @@ public class redBall : MonoBehaviour {
 	}
 
 	void CheckTileMovement() {
-		switch (currentTile) {
-		case 1:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 2:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 3:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 4:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 5:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 6:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 7:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 8:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 9:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 10:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 11:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 12:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 13:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 14:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 15:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 16:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 17:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 18:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 19:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 20:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 21:
-			downLeftMoveEnabled = true;
-			downRightMoveEnabled = true;
-			break;
-		case 22:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
+		movementTest = TileListCheck.Instance.CheckTileMovement (currentTile);
+		if (currentTile >= 22) {
 			atEnd = true;
-			break;
-		case 23:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
-		case 24:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
-		case 25:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
-		case 26:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
-		case 27:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
-		case 28:
-			downLeftMoveEnabled = false;
-			downRightMoveEnabled = false;
-			atEnd = true;
-			break;
 		}
 	}
 }
