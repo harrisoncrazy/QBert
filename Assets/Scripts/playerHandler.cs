@@ -7,9 +7,12 @@ public class playerHandler : MonoBehaviour {
 
 	public static playerHandler Instance;
 
+	public int startingTile;
+	public int startingRow;
+
 	public int totalConvertedTiles = 0;
 
-	public bool inputDelay = true;
+	private bool inputDelay = true;
 
 	public bool isFalling = false;
 	public bool isEnding = false;
@@ -77,8 +80,8 @@ public class playerHandler : MonoBehaviour {
 		movementTest = new TileListCheck.movementIndex();
 		topTile = GameObject.Find ("tile" + 1 + "Base").transform;
 
-		currentTile = 5;
-		currentRow = 3;
+		currentTile = startingTile;
+		currentRow = startingRow;
 		audioMain.PlayOneShot (startMusic, 1.0f);
 		StartCoroutine ("StartDelay");
 	}
