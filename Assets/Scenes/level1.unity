@@ -210,6 +210,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114249078317546276, guid: 6d279b23b927e204b8fe35ed63ec4bda,
+        type: 2}
+      propertyPath: topTile
+      value: 
+      objectReference: {fileID: 365797163}
+    - target: {fileID: 1976589358818534, guid: 6d279b23b927e204b8fe35ed63ec4bda, type: 2}
+      propertyPath: m_Name
+      value: Platform0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d279b23b927e204b8fe35ed63ec4bda, type: 2}
   m_IsPrefabParent: 0
@@ -1688,7 +1697,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1976589358818534, guid: 6d279b23b927e204b8fe35ed63ec4bda, type: 2}
       propertyPath: m_Name
-      value: Platform (1)
+      value: Platform1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114249078317546276, guid: 6d279b23b927e204b8fe35ed63ec4bda,
+        type: 2}
+      propertyPath: platformNum
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d279b23b927e204b8fe35ed63ec4bda, type: 2}
@@ -1733,6 +1747,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84e4814cbe1f814a8b953258c4f8da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleporterTiles: 
+  platform0: 11
+  platform1: 15
+  platform2: 0
+  platform3: 0
 --- !u!1 &1495963641
 GameObject:
   m_ObjectHideFlags: 0

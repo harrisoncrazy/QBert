@@ -201,6 +201,7 @@ MonoBehaviour:
   isFalling: 0
   isEnding: 0
   isWinning: 0
+  isAtTeleporter: 0
   topLeftIdle: {fileID: 21300014, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
   topRightIdle: {fileID: 21300002, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
   botLeftIdle: {fileID: 21300006, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
@@ -214,6 +215,7 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: cce9935c3b775dd46bafa077d91d72ea, type: 3}
   fall: {fileID: 8300000, guid: f38690cbdfda5be4b94a6c1de191dba2, type: 3}
   endMusic: {fileID: 8300000, guid: 9c5b4d8a900b98b4a8e6df8fe26c7218, type: 3}
+  teleportMusic: {fileID: 8300000, guid: ab926090e674a4e4c8376771ec00a827, type: 3}
 --- !u!212 &212954872682651478
 SpriteRenderer:
   m_ObjectHideFlags: 1

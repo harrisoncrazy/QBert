@@ -9,19 +9,85 @@ public class TileListCheck : MonoBehaviour {
 		public bool upRightMoveEnabled;
 		public bool downLeftMoveEnabled;
 		public bool downRightMoveEnabled;
+
+		public bool leftTeleporter;
+		public bool rightTeleporter;
+		public int teleporterNumber;
 	}
 
 	private movementIndex movementTest;
 
+	public int[] teleporterTiles;
+
+	public int platform0;
+	public int platform1;
+	public int platform2;
+	public int platform3;
+
 	public static TileListCheck Instance;
+
 
 	// Use this for initialization
 	void Start () {
 		Instance = this;
 		movementTest = new movementIndex();
+		teleporterTiles = new int[4];
+		teleporterTiles [0] = platform0;
+		teleporterTiles [1] = platform1;
+		teleporterTiles [2] = platform2;
+		teleporterTiles [3] = platform3;
 	}
 
 	public movementIndex CheckTileMovement(int currentTile) {
+		movementTest.leftTeleporter = false;
+		movementTest.rightTeleporter = false;
+		for (int i = 0; i <= teleporterTiles.Length - 1; i++) {
+			if (currentTile == teleporterTiles [i]) {
+				movementTest.teleporterNumber = i;
+				switch (currentTile) {
+				case 4:
+					movementTest.leftTeleporter = true;
+					movementTest.rightTeleporter = false;
+					break;
+				case 6:
+					movementTest.leftTeleporter = false;
+					movementTest.rightTeleporter = true;
+					break;
+				case 7:
+					movementTest.leftTeleporter = true;
+					movementTest.rightTeleporter = false;
+					break;
+				case 10:
+					movementTest.leftTeleporter = false;
+					movementTest.rightTeleporter = true;
+					break;
+				case 11:
+					movementTest.leftTeleporter = true;
+					movementTest.rightTeleporter = false;
+					break;
+				case 15:
+					movementTest.leftTeleporter = false;
+					movementTest.rightTeleporter = true;
+					break;
+				case 16:
+					movementTest.leftTeleporter = true;
+					movementTest.rightTeleporter = false;
+					break;
+				case 21:
+					movementTest.leftTeleporter = false;
+					movementTest.rightTeleporter = true;
+					break;
+				case 22:
+					movementTest.leftTeleporter = true;
+					movementTest.rightTeleporter = false;
+					break;
+				case 28:
+					movementTest.leftTeleporter = false;
+					movementTest.rightTeleporter = true;
+					break;
+				}
+			}
+		}
 		switch (currentTile) {
 		case 1:
 			movementTest.upLeftMoveEnabled = false;

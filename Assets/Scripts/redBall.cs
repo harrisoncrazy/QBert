@@ -13,7 +13,7 @@ public class redBall : MonoBehaviour {
 
 	public int currentTile;
 
-	private TileListCheck.movementIndex movementTest;//movement index, refers to an outside script which automatically checks tile routs
+	public TileListCheck.movementIndex movementTest;//movement index, refers to an outside script which automatically checks tile routs
 
 	private bool bouncingStarted = false;
 
