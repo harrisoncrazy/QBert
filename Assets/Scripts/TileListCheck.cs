@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TileListCheck : MonoBehaviour {
 
+	public static TileListCheck Instance;
+
 	public struct movementIndex {
 		public bool upLeftMoveEnabled;
 		public bool upRightMoveEnabled;
@@ -23,8 +25,6 @@ public class TileListCheck : MonoBehaviour {
 	public int platform1;
 	public int platform2;
 	public int platform3;
-
-	public static TileListCheck Instance;
 
 
 	// Use this for initialization

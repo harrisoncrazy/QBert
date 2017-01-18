@@ -23,23 +23,25 @@ public class platformHandler : MonoBehaviour {
 			if (playerHandler.Instance.startingTeleport == true) {
 				if (leftPlatform == true) {
 					if (delay > 0) {
-						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (transform.position.x - 0.25f, transform.position.y + .25f), .8f * Time.deltaTime); //moving out
+						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (transform.position.x - 0.45f, transform.position.y + .25f), .75f * Time.deltaTime); //moving out
 						delay -= Time.deltaTime;
 					} else {
-						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.5f), .8f * Time.deltaTime); //moving up to above the top tile
+						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.5f), .7f * Time.deltaTime); //moving up to above the top tile
 						if (transform.position.y == topTile.position.y + 0.5f) {
 							playerHandler.Instance.stoppedTeleport = true;
+							Destroy (this.gameObject);
 						}
 					}
 				}
 				if (leftPlatform != true) {
 					if (delay > 0) {
-						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (transform.position.x + 0.25f, transform.position.y + .25f), .8f * Time.deltaTime); //moving out
+						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (transform.position.x + 0.45f, transform.position.y + .25f), .75f * Time.deltaTime); //moving out
 						delay -= Time.deltaTime;
 					} else {
-						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.5f), .8f * Time.deltaTime); //moving up to above the top tile
+						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.5f), .7f * Time.deltaTime); //moving up to above the top tile
 						if (transform.position.y == topTile.position.y + 0.5f) {
 							playerHandler.Instance.stoppedTeleport = true;
+							Destroy (this.gameObject);
 						}
 					}
 				}

@@ -131,7 +131,10 @@ public class playerHandler : MonoBehaviour {
 						if (stoppedTeleport != true) {
 							if (BezierTime >= 1) {
 								transform.position = new Vector3 (teleporterPlatform.transform.position.x, teleporterPlatform.transform.position.y + 0.075f);
-								startingTeleport = true;
+								if (startingTeleport == false) {
+									audioMain.PlayOneShot (teleportMusic, 0.7f);
+									startingTeleport = true;
+								}
 							}
 						}
 						if (stoppedTeleport == true) {
@@ -144,7 +147,6 @@ public class playerHandler : MonoBehaviour {
 								mainSprite.sortingOrder = 2;
 								BezierTime = 0;
 								TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0; //destroying the teleport in the array
-								GameObject.Destroy (teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber)); //destroying the teleporter gameobject
 								GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 							}
 						}
@@ -196,7 +198,7 @@ public class playerHandler : MonoBehaviour {
 						}
 						if (movementTest.leftTeleporter == true) {
 							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
-							audioMain.PlayOneShot (teleportMusic, 0.7f);
+							audioMain.PlayOneShot (jump, 0.7f);
 							jumpFace = 1;
 							mainSprite.sprite = topLeftJump;
 							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
@@ -258,7 +260,7 @@ public class playerHandler : MonoBehaviour {
 						} 
 						if (movementTest.rightTeleporter == true) {
 							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
-							audioMain.PlayOneShot (teleportMusic, 0.7f);
+							audioMain.PlayOneShot (jump, 0.7f);
 							jumpFace = 2;
 							mainSprite.sprite = topRightJump;
 							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
