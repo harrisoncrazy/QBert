@@ -101,7 +101,7 @@ public class snakeHandler : MonoBehaviour {
 						//audioMain.PlayOneShot (jump, 0.7f);
 							mainSprite.sprite = topLeftJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 							controlPointY = startPointY + 0.5f;
@@ -110,7 +110,7 @@ public class snakeHandler : MonoBehaviour {
 							currentSnakeRow--;
 
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							isMoving = true;
 							break;
@@ -118,7 +118,7 @@ public class snakeHandler : MonoBehaviour {
 					//audioMain.PlayOneShot (jump, 0.7f);
 							mainSprite.sprite = topRightJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 							controlPointY = startPointY + 0.5f;
@@ -127,7 +127,7 @@ public class snakeHandler : MonoBehaviour {
 							currentSnakeRow--;
 
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							isMoving = true;
 							break;
@@ -135,7 +135,7 @@ public class snakeHandler : MonoBehaviour {
 					//audioMain.PlayOneShot (jump, 0.7f);
 							mainSprite.sprite = botLeftJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 							controlPointY = startPointY + 0.5f;
@@ -144,7 +144,7 @@ public class snakeHandler : MonoBehaviour {
 							currentSnakeRow++;
 
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							isMoving = true;
 							break;
@@ -152,7 +152,7 @@ public class snakeHandler : MonoBehaviour {
 					//audioMain.PlayOneShot (jump, 0.7f);
 							mainSprite.sprite = botRightJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 							controlPointY = startPointY + 0.5f;
@@ -161,7 +161,7 @@ public class snakeHandler : MonoBehaviour {
 							currentSnakeRow++;
 
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
+							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
 
 							isMoving = true;
 							break;
