@@ -88,6 +88,7 @@ public class snakeHandler : MonoBehaviour {
 						BezierTime = 0;
 						isMoving = false;
 						transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+						mainSprite.sortingOrder = currentSnakeRow + 1;
 					}
 				}
 				if (isMoving == false) {
@@ -97,7 +98,7 @@ public class snakeHandler : MonoBehaviour {
 						PickRoute ();
 						switch (movementDir) {
 						case 1:
-					//audioMain.PlayOneShot (jump, 0.7f);
+						//audioMain.PlayOneShot (jump, 0.7f);
 							mainSprite.sprite = topLeftJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
 							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
@@ -111,7 +112,6 @@ public class snakeHandler : MonoBehaviour {
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
 							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
 
-					//mainSprite.sortingOrder = currentSnakeRow + 1;
 							isMoving = true;
 							break;
 						case 2:
@@ -129,7 +129,6 @@ public class snakeHandler : MonoBehaviour {
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
 							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
 
-							mainSprite.sortingOrder = currentSnakeRow + 1;
 							isMoving = true;
 							break;
 						case 3:
@@ -147,7 +146,6 @@ public class snakeHandler : MonoBehaviour {
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
 							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
 
-							mainSprite.sortingOrder = currentSnakeRow + 1;
 							isMoving = true;
 							break;
 						case 4:
@@ -165,7 +163,6 @@ public class snakeHandler : MonoBehaviour {
 							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
 							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f;
 
-							mainSprite.sortingOrder = currentSnakeRow + 1;
 							isMoving = true;
 							break;
 						}

@@ -176,7 +176,7 @@ public class playerHandler : MonoBehaviour {
 
 								mainSprite.sortingOrder = currentRow + 1;
 								isMoving = true;
-							} else {
+							} else { //If jumping off the edge
 								if (movementTest.leftTeleporter != true) {
 									audioMain.PlayOneShot (fall, 0.7f);
 									jumpFace = 1;
@@ -196,7 +196,7 @@ public class playerHandler : MonoBehaviour {
 								}
 							}
 						}
-						if (movementTest.leftTeleporter == true) {
+						if (movementTest.leftTeleporter == true) { //if Hopping into a teleporter
 							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
 							audioMain.PlayOneShot (jump, 0.7f);
 							jumpFace = 1;
@@ -238,7 +238,7 @@ public class playerHandler : MonoBehaviour {
 
 								mainSprite.sortingOrder = currentRow + 1;
 								isMoving = true;
-							} else {
+							} else {//If jumping off the edge
 								if (movementTest.rightTeleporter != true) {
 									audioMain.PlayOneShot (fall, 0.7f);
 									jumpFace = 2;
@@ -297,7 +297,7 @@ public class playerHandler : MonoBehaviour {
 
 							mainSprite.sortingOrder = currentRow + 1;
 							isMoving = true;
-						} else {
+						} else {//If jumping off the edge
 							audioMain.PlayOneShot (fall, 0.7f);
 							jumpFace = 3;
 							mainSprite.sprite = botLeftJump;
@@ -335,7 +335,7 @@ public class playerHandler : MonoBehaviour {
 
 							mainSprite.sortingOrder = currentRow + 1;
 							isMoving = true;
-						} else {
+						} else {//If jumping off the edge
 							audioMain.PlayOneShot (fall, 0.7f);
 							jumpFace = 4;
 							mainSprite.sprite = botRightJump;
