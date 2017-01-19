@@ -6,8 +6,6 @@ public class snakeHandler : MonoBehaviour {
 
 	public TileListCheck.movementIndex movementIndex;
 
-	private bool gridInit = false;
-
 	public int movementDir = 0;
 	//an int for storing the movement direction
 	//1 == UP LEFT
@@ -63,8 +61,8 @@ public class snakeHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerHandler.Instance.isEnding == false) {
-			if (playerHandler.Instance.isFalling == false) {
+		if (GameManager.Instance.isEnding == false) {
+			if (GameManager.Instance.isFalling == false) {
 				if (isMoving == true) {
 					curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
 					curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);

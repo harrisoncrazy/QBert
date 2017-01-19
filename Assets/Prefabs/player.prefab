@@ -117,7 +117,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.681
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -200,6 +200,7 @@ MonoBehaviour:
   startingTile: 5
   startingRow: 3
   totalConvertedTiles: 0
+  inputDelay: 1
   isFalling: 0
   isEnding: 0
   isWinning: 0
@@ -216,11 +217,6 @@ MonoBehaviour:
   botRightJump: {fileID: 21300008, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
   currentRow: 0
   currentTile: 0
-  jump: {fileID: 8300000, guid: cce9935c3b775dd46bafa077d91d72ea, type: 3}
-  fall: {fileID: 8300000, guid: f38690cbdfda5be4b94a6c1de191dba2, type: 3}
-  endMusic: {fileID: 8300000, guid: 9c5b4d8a900b98b4a8e6df8fe26c7218, type: 3}
-  teleportMusic: {fileID: 8300000, guid: ab926090e674a4e4c8376771ec00a827, type: 3}
-  startMusic: {fileID: 8300000, guid: 8d84399093219ce4ea10200fcaf9fe43, type: 3}
 --- !u!212 &212954872682651478
 SpriteRenderer:
   m_ObjectHideFlags: 1

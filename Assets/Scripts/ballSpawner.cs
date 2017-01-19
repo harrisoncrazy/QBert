@@ -23,8 +23,8 @@ public class ballSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerHandler.Instance.isEnding == false) {
-			if (playerHandler.Instance.isFalling == false) {
+		if (GameManager.Instance.isEnding == false) {
+			if (GameManager.Instance.isFalling == false) {
 				realSpawnDelay -= Time.deltaTime;
 
 				if (realSpawnDelay <= 0) {

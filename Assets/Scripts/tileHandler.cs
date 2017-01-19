@@ -23,7 +23,7 @@ public class tileHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerHandler.Instance.isWinning == true) {
+		if (GameManager.Instance.isWinning == true) {
 			timer -= Time.deltaTime;
 
 			if (timer <= 0) {
@@ -43,7 +43,7 @@ public class tileHandler : MonoBehaviour {
 	public void changeTile() {
 		if (isStepped == false) {
 			mainSprite.sprite = changedTile;
-			playerHandler.Instance.totalConvertedTiles++;
+			GameManager.Instance.totalConvertedTiles++;
 			isStepped = true;
 		}
 	}

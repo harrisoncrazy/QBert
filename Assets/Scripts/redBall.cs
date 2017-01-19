@@ -37,21 +37,17 @@ public class redBall : MonoBehaviour {
 
 	private bool atEnd = false;
 
-	public AudioClip jump;
-	AudioSource audioMain;
-
 	// Use this for initialization
 	void Start () {
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
-		audioMain = GetComponent<AudioSource> ();
 
 		movementTest = new TileListCheck.movementIndex();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (playerHandler.Instance.isEnding == false) {
-			if (playerHandler.Instance.isFalling == false) {
+		if (GameManager.Instance.isEnding == false) {
+			if (GameManager.Instance.isFalling == false) {
 				if (bouncingStarted == false) { //falling down to the first point on the grid
 					transform.position = Vector3.MoveTowards (transform.position, GameObject.Find ("tile" + currentTile + "Base").transform.position, 2f * Time.deltaTime); //moving towards the point
 
@@ -89,7 +85,7 @@ public class redBall : MonoBehaviour {
 							if (rando == 1) {
 								if (movementTest.downLeftMoveEnabled == true) { //moving down and left
 									if (atEnd == false) {
-										audioMain.PlayOneShot (jump, 0.7f);
+										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.Balljump, 0.7f);
 										mainSprite.sprite = BallJump;
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -128,7 +124,7 @@ public class redBall : MonoBehaviour {
 							if (rando == 2) {
 								if (movementTest.downRightMoveEnabled == true) { //moving down and right
 									if (atEnd == false) {
-										audioMain.PlayOneShot (jump, 0.7f);
+										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.Balljump, 0.7f);
 										mainSprite.sprite = BallJump;
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
