@@ -1581,7 +1581,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2204,6 +2204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06253dcd51c1b924c81cbd8ab18d228e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalConvertedTiles: 0
+  totalScore: 0
+  inputDelay: 1
+  isFalling: 0
+  isEnding: 0
+  isWinning: 0
   QBertjump: {fileID: 8300000, guid: cce9935c3b775dd46bafa077d91d72ea, type: 3}
   Balljump: {fileID: 8300000, guid: e486f9ad85cd20b41862b0abc67ba86f, type: 3}
   QBertfall: {fileID: 8300000, guid: f38690cbdfda5be4b94a6c1de191dba2, type: 3}

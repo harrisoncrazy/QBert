@@ -44,6 +44,7 @@ public class tileHandler : MonoBehaviour {
 		if (isStepped == false) {
 			mainSprite.sprite = changedTile;
 			GameManager.Instance.totalConvertedTiles++;
+			GameManager.Instance.totalScore += 25;
 			isStepped = true;
 		}
 	}

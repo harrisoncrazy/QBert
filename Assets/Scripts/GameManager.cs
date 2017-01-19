@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager Instance;
 
 	public int totalConvertedTiles = 0;
+	public int totalScore = 0;
 
 	//ending values
 	public bool inputDelay = true;
@@ -51,6 +52,14 @@ public class GameManager : MonoBehaviour {
 				isEnding = true;
 				isWinning = true;
 				GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.endMusic, 0.7f);
+				totalScore += 1000;
+
+				for (int i = 0; i <= TileListCheck.Instance.teleporterTiles.Length - 1; i++) {
+					if (TileListCheck.Instance.teleporterTiles [i] != 0) {
+						totalScore += 100;
+					}
+				}
+
 				StartCoroutine ("WinGame");
 			}
 		}

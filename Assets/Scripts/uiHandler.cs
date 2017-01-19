@@ -17,6 +17,12 @@ public class uiHandler : MonoBehaviour {
 
 	public Text scoreText;
 
+	public GameObject displayToTile;
+	public Sprite setToTile;
+	public Sprite defaultTile;
+	private float timer = 0.1f;
+	private bool swapped = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -25,6 +31,11 @@ public class uiHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		ArrowAnim ();
+		DisplayScore ();
+
+		if (GameManager.Instance.isWinning == true) {
+			cycleTile ();
+		}
 	}
 
 	void ArrowAnim() {
@@ -54,6 +65,22 @@ public class uiHandler : MonoBehaviour {
 	}
 
 	void DisplayScore() {
+		scoreText.text = "" + GameManager.Instance.totalScore;
+	}
 
+	void cycleTile() {
+		timer -= Time.deltaTime;
+
+		if (timer <= 0) {
+			if (swapped == false) {
+				displayToTile.GetComponent<Image>() = setToTile;
+				swapped = true;
+			} 
+			else if (swapped == true) {
+				displayToTile.GetComponent<Image>().sprite = defaultTile;
+				swapped = false;
+			}
+			timer = 0.1f;
+		}
 	}
 }
