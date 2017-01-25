@@ -73,7 +73,7 @@ public class uiHandler : MonoBehaviour {
 
 		if (timer <= 0) {
 			if (swapped == false) {
-				displayToTile.GetComponent<Image>() = setToTile;
+				displayToTile.GetComponent<Image>().sprite = setToTile;
 				swapped = true;
 			} 
 			else if (swapped == true) {

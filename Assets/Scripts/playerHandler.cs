@@ -165,7 +165,7 @@ public class playerHandler : MonoBehaviour {
 
 									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f; //the final destination tile
 									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-									mainSprite.sortingOrder = currentRow;
+									mainSprite.sortingOrder = currentRow - 1;
 									isMoving = true;
 									GameManager.Instance.isFalling = true;
 									GameManager.Instance.StartCoroutine ("EndGame");
@@ -227,7 +227,7 @@ public class playerHandler : MonoBehaviour {
 
 									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f; //the final destination tile
 									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-									mainSprite.sortingOrder = currentRow;
+									mainSprite.sortingOrder = currentRow - 1;
 									isMoving = true;
 									GameManager.Instance.isFalling = true;
 									GameManager.Instance.StartCoroutine ("EndGame");

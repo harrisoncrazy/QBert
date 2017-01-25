@@ -2003,6 +2003,9 @@ MonoBehaviour:
   farRightArrow: {fileID: 1300207409}
   closeRightArrow: {fileID: 304337658}
   scoreText: {fileID: 663452387}
+  displayToTile: {fileID: 639048132}
+  setToTile: {fileID: 21300076, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
+  defaultTile: {fileID: 21300078, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
 --- !u!4 &888085691
 Transform:
   m_ObjectHideFlags: 0
