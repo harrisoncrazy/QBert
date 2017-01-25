@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1764745607505686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.7849672, y: -0.9531999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -160,7 +160,11 @@ MonoBehaviour:
   BallHit: {fileID: 21300026, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
   currentRow: 0
   currentTile: 0
-  jump: {fileID: 8300000, guid: e486f9ad85cd20b41862b0abc67ba86f, type: 3}
+  isSnake: 0
+  snakePrefab: {fileID: 1371430829927488, guid: 899cc1fa98f13e447a1074ebdc39b113,
+    type: 2}
+  PurpleBallJump: {fileID: 21300100, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
+  PurpleBallHit: {fileID: 21300102, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
 --- !u!212 &212718340226491690
 SpriteRenderer:
   m_ObjectHideFlags: 1

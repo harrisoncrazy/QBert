@@ -16,6 +16,10 @@ public class ballSpawner : MonoBehaviour {
 
 	private int cooldownRedCounter;
 
+	//snake variables
+	public Sprite purpleBall;
+	private bool isSnakeSpawned = false;
+
 	// Use this for initialization
 	void Start () {
 		realSpawnDelay = spawnDelay;
@@ -31,6 +35,16 @@ public class ballSpawner : MonoBehaviour {
 					int rando = Random.Range (1, 3);
 					if (rando == 1) {
 						redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
+
+						if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
+							int rando2 = Random.Range(1, 7);
+							if (rando2 <= 2) {
+								ball.isSnake = true;
+								ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
+								isSnakeSpawned = true;
+							}
+						}
+
 						ball.transform.position = new Vector3 (-0.15f, 0.6f);
 						ball.currentTile = 2;
 						ball.currentRow = 2;
@@ -42,6 +56,16 @@ public class ballSpawner : MonoBehaviour {
 						}
 					} else if (rando == 2) {
 						redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
+
+						if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
+							int rando2 = Random.Range(1, 7);
+							if (rando2 <= 2) {
+								ball.isSnake = true;
+								ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
+								isSnakeSpawned = true;
+							}
+						}
+
 						ball.transform.position = new Vector3 (0.15f, 0.6f);
 						ball.currentTile = 3;
 						ball.currentRow = 2;

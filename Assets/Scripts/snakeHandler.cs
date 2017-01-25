@@ -53,9 +53,6 @@ public class snakeHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		currentSnakeRow = 7;
-		currentSnakeTile = 23;
-
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
 	}
 	

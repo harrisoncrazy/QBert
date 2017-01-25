@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager Instance;
 
+	public int totalLives;
+
 	public int totalConvertedTiles = 0;
 	public int totalScore = 0;
 
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	public bool isFalling = false;
 	public bool isEnding = false;
 	public bool isWinning = false;
+	public bool isGameOver = false;
 
 
 	//Audio Files
@@ -37,6 +40,8 @@ public class GameManager : MonoBehaviour {
 		audioMain = GetComponent<AudioSource> ();
 		audioMain.PlayOneShot (startMusic, 1.0f);
 		StartCoroutine ("StartDelay");
+
+		totalLives = 2;
 
 		GameObject player = Instantiate (playerPrefab, transform.position, Quaternion.identity);
 		player.GetComponent<playerHandler> ().currentTile = 5;
@@ -75,12 +80,17 @@ public class GameManager : MonoBehaviour {
 	//Loading a new scene
 	IEnumerator EndGame() {
 		yield return new WaitForSeconds (3.0f);
-		GameObject player = Instantiate (playerPrefab, transform.position, Quaternion.identity);
-		player.GetComponent<playerHandler> ().currentTile = 5;
-		player.GetComponent<playerHandler> ().currentRow = 3;
-		player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
-		isEnding = false;
-		isFalling = false;
+		if (totalLives > 0) {
+			totalLives--;
+			GameObject player = Instantiate (playerPrefab, transform.position, Quaternion.identity);
+			player.GetComponent<playerHandler> ().currentTile = 5;
+			player.GetComponent<playerHandler> ().currentRow = 3;
+			player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
+			isEnding = false;
+			isFalling = false;
+		} else if (totalLives < 0) {
+			isGameOver = true;
+		}
 		//SceneManager.LoadScene ("level1");
 	}
 

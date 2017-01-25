@@ -37,6 +37,13 @@ public class redBall : MonoBehaviour {
 
 	private bool atEnd = false;
 
+	//Variables for snake!
+	public bool isSnake = false;
+	public GameObject snakePrefab;
+	public Sprite PurpleBallJump;
+	public Sprite PurpleBallHit;
+	private bool snakeSpawned = false;
+
 	// Use this for initialization
 	void Start () {
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
@@ -53,7 +60,11 @@ public class redBall : MonoBehaviour {
 
 					if (transform.position.y <= GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f) {//reaching the point
 						transform.position = new Vector3 (GameObject.Find ("tile" + currentTile + "Base").transform.position.x, GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f, 0); //setting exact point
-						mainSprite.sprite = BallHit; //changing sprite
+						if (isSnake == false) { //changing sprite
+							mainSprite.sprite = BallHit;
+						} else if (isSnake == true) {
+							mainSprite.sprite = PurpleBallHit;
+						}
 						bouncingStarted = true;//starting bounce
 						CheckTileMovement();
 						StartCoroutine ("ballDelay");
@@ -70,7 +81,11 @@ public class redBall : MonoBehaviour {
 						BezierTime = BezierTime + Time.deltaTime * 1f;
 
 						if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-							mainSprite.sprite = BallHit;
+							if (isSnake == false) {
+								mainSprite.sprite = BallHit;
+							} else if (isSnake == true) {
+								mainSprite.sprite = PurpleBallHit;
+							}
 						}
 
 						if (BezierTime >= 1) { //end of the jump
@@ -86,7 +101,11 @@ public class redBall : MonoBehaviour {
 								if (movementTest.downLeftMoveEnabled == true) { //moving down and left
 									if (atEnd == false) {
 										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.Balljump, 0.7f);
-										mainSprite.sprite = BallJump;
+										if (isSnake == false) {
+											mainSprite.sprite = BallJump;
+										} else if (isSnake == true) {
+											mainSprite.sprite = PurpleBallJump;
+										}
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
@@ -105,19 +124,32 @@ public class redBall : MonoBehaviour {
 										CheckTileMovement ();
 									}
 								} else if (atEnd == true) {
-									mainSprite.sprite = BallJump;
-									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+									if (isSnake == false) {
+										mainSprite.sprite = BallJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-									controlPointX = startPointX;
-									controlPointY = startPointY + 0.25f;
+										controlPointX = startPointX;
+										controlPointY = startPointY + 0.25f;
 
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f;
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f;
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
 
-									isMoving = true;
-									ballDelayed = true;
-									StartCoroutine ("deleteSelf");
+										isMoving = true;
+										ballDelayed = true;
+										StartCoroutine ("deleteSelf");
+									}
+									if (isSnake == true) {
+										if (snakeSpawned == false) {
+											snakeHandler snake = ((GameObject)Instantiate (snakePrefab, GameObject.Find ("tile" + currentTile + "Base").transform)).GetComponent<snakeHandler> ();
+											//snakeHandler snake = Instantiate (snakePrefab, this.transform).GetComponent<snakeHandler> ();
+											snake.currentSnakeRow = currentRow;
+											snake.currentSnakeTile = currentTile;
+
+											snakeSpawned = true;
+											StartCoroutine ("deleteSelf");
+										}
+									}
 								}
 							}
 
@@ -125,7 +157,11 @@ public class redBall : MonoBehaviour {
 								if (movementTest.downRightMoveEnabled == true) { //moving down and right
 									if (atEnd == false) {
 										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.Balljump, 0.7f);
-										mainSprite.sprite = BallJump;
+										if (isSnake == false) {
+											mainSprite.sprite = BallJump;
+										} else if (isSnake == true) {
+											mainSprite.sprite = PurpleBallJump;
+										}
 										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
@@ -144,19 +180,33 @@ public class redBall : MonoBehaviour {
 										CheckTileMovement ();
 									}
 								} else if (atEnd == true) {
-									mainSprite.sprite = BallJump;
-									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+									if (isSnake == false) {
+										mainSprite.sprite = BallJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-									controlPointX = startPointX;
-									controlPointY = startPointY + 0.25f;
+										controlPointX = startPointX;
+										controlPointY = startPointY + 0.25f;
 
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f;
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f;
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.24f;
 
-									isMoving = true;
-									ballDelayed = true;
-									StartCoroutine ("deleteSelf");
+										isMoving = true;
+										ballDelayed = true;
+										StartCoroutine ("deleteSelf");
+									}
+									if (isSnake == true) {
+										if (snakeSpawned == false) {
+											snakeHandler snake = ((GameObject)Instantiate (snakePrefab, GameObject.Find ("tile" + currentTile + "Base").transform)).GetComponent<snakeHandler> ();
+											//snakeHandler snake = Instantiate (snakePrefab, this.transform).GetComponent<snakeHandler> ();
+											snake.transform.position = new Vector3 (GameObject.Find ("tile" + currentTile + "Base").transform.position.x, GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f);
+											snake.currentSnakeRow = currentRow;
+											snake.currentSnakeTile = currentTile;
+
+											snakeSpawned = true;
+											Destroy (this.gameObject);
+										}
+									}
 								}
 							}
 						}
