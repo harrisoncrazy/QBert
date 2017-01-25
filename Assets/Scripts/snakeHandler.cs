@@ -58,6 +58,18 @@ public class snakeHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (currentSnakeRow < 1) {
+			currentSnakeRow = 1;
+		}
+		if (currentSnakeRow > 7) {
+			currentSnakeRow = 7;
+		}
+		if (currentSnakeTile < 1) {
+			currentSnakeTile = 1;
+		}
+		if (currentSnakeTile > 28) {
+			currentSnakeTile = 28;
+		}
 		if (GameManager.Instance.isEnding == false) {
 			if (GameManager.Instance.isFalling == false) {
 				if (isMoving == true) {
