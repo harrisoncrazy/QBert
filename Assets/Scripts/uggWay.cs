@@ -11,8 +11,6 @@ public class uggWay : MonoBehaviour {
 	public Sprite jumpingSpriteLeft;
 	public Sprite jumpingSpriteRight;
 
-	private TileListCheck.movementIndex movementTest;//movement index, refers to an outside script which automatically checks tile routes
-
 	public int currentRow;
 
 	public int currentTile;
@@ -42,8 +40,6 @@ public class uggWay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
-
-		movementTest = new TileListCheck.movementIndex();
 
 		currentRow = 7;
 		currentTile = 28;
