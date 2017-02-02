@@ -2493,6 +2493,7 @@ MonoBehaviour:
   endMusic: {fileID: 8300000, guid: 9c5b4d8a900b98b4a8e6df8fe26c7218, type: 3}
   teleportMusic: {fileID: 8300000, guid: ab926090e674a4e4c8376771ec00a827, type: 3}
   startMusic: {fileID: 8300000, guid: 8d84399093219ce4ea10200fcaf9fe43, type: 3}
+  snakeJump: {fileID: 8300000, guid: 7672e4c5b8e96c445b3174d1fd298f0b, type: 3}
   audioMain: {fileID: 0}
   playerPrefab: {fileID: 1939833871414736, guid: 1db58a81a6c6ea547a7e8e4d9bf1591c,
     type: 2}

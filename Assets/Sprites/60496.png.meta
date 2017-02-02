@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: f66e83534109e7d4da72d956904adcf4
-timeCreated: 1485986377
+timeCreated: 1486008532
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -65,6 +65,8 @@ TextureImporter:
     21300116: 60496_58
     21300118: 60496_59
     21300120: 60496_60
+    21300122: 60496_61
+    21300124: 60496_62
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -918,6 +920,32 @@ TextureImporter:
         y: 176
         width: 14
         height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_61
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_62
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 272
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -2493,6 +2493,7 @@ MonoBehaviour:
   endMusic: {fileID: 8300000, guid: 9c5b4d8a900b98b4a8e6df8fe26c7218, type: 3}
   teleportMusic: {fileID: 8300000, guid: ab926090e674a4e4c8376771ec00a827, type: 3}
   startMusic: {fileID: 8300000, guid: 8d84399093219ce4ea10200fcaf9fe43, type: 3}
+  snakeJump: {fileID: 0}
   audioMain: {fileID: 0}
   playerPrefab: {fileID: 1939833871414736, guid: 1db58a81a6c6ea547a7e8e4d9bf1591c,
     type: 2}
@@ -4323,6 +4324,7 @@ MonoBehaviour:
   spawnDelay: 4
   redBaller: {fileID: 1764745607505686, guid: 6c07cc6667d595f4fb5db385d0448274, type: 2}
   purpleBall: {fileID: 21300100, guid: f66e83534109e7d4da72d956904adcf4, type: 3}
+  isWrongWay: 1
 --- !u!4 &1882295779
 Transform:
   m_ObjectHideFlags: 0

@@ -58,18 +58,31 @@ public class snakeHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currentSnakeRow < 1) {
-			currentSnakeRow = 1;
-		}
-		if (currentSnakeRow > 7) {
+
+
+		/*
+		if (currentSnakeTile <= 28 && currentSnakeTile > 21) {
 			currentSnakeRow = 7;
 		}
-		if (currentSnakeTile < 1) {
-			currentSnakeTile = 1;
+		if (currentSnakeTile <= 21 && currentSnakeTile > 15) {
+			currentSnakeRow = 6;
 		}
-		if (currentSnakeTile > 28) {
-			currentSnakeTile = 28;
+		if (currentSnakeTile <= 15 && currentSnakeTile > 10) {
+			currentSnakeRow = 5;
 		}
+		if (currentSnakeTile <= 10 && currentSnakeTile > 6) {
+			currentSnakeRow = 4;
+		}
+		if (currentSnakeTile <= 6 && currentSnakeTile > 3) {
+			currentSnakeRow = 3;
+		}
+		if (currentSnakeTile <= 3 && currentSnakeTile > 1) {
+			currentSnakeRow = 2;
+		}
+		if (currentSnakeTile == 1) {
+			currentSnakeRow = 1;
+		}*/
+
 		if (GameManager.Instance.isEnding == false) {
 			if (GameManager.Instance.isFalling == false) {
 				if (isMoving == true) {
@@ -105,7 +118,7 @@ public class snakeHandler : MonoBehaviour {
 						PickRoute ();
 						switch (movementDir) {
 						case 1:
-						//audioMain.PlayOneShot (jump, 0.7f);
+							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
 							mainSprite.sprite = topLeftJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
 							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
@@ -122,7 +135,7 @@ public class snakeHandler : MonoBehaviour {
 							isMoving = true;
 							break;
 						case 2:
-					//audioMain.PlayOneShot (jump, 0.7f);
+							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
 							mainSprite.sprite = topRightJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
 							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
@@ -139,7 +152,7 @@ public class snakeHandler : MonoBehaviour {
 							isMoving = true;
 							break;
 						case 3:
-					//audioMain.PlayOneShot (jump, 0.7f);
+							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
 							mainSprite.sprite = botLeftJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
 							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
@@ -156,7 +169,7 @@ public class snakeHandler : MonoBehaviour {
 							isMoving = true;
 							break;
 						case 4:
-					//audioMain.PlayOneShot (jump, 0.7f);
+							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
 							mainSprite.sprite = botRightJump;
 							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
 							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
@@ -238,20 +251,40 @@ public class snakeHandler : MonoBehaviour {
 		}
 
 		if (currentSnakeRow == currentPlayerRow) {
-			int rando = Random.Range (1, 5);
-			switch (rando) {
-			case 1:
-				movementDir = 1;
-				break;
-			case 2:
-				movementDir = 2;
-				break;
-			case 3:
-				movementDir = 3;
-				break;
-			case 4:
-				movementDir = 4;
-				break;
+			if (currentSnakeRow < 7) {
+				int rando = Random.Range (1, 5);
+				switch (rando) {
+				case 1:
+					movementDir = 1;
+					break;
+				case 2:
+					movementDir = 2;
+					break;
+				case 3:
+					movementDir = 3;
+					break;
+				case 4:
+					movementDir = 4;
+					break;
+				}
+			} else if (currentSnakeRow == 7) {
+				if (currentSnakeTile != 22 || currentSnakeTile != 28) {
+					int rando = Random.Range (1, 3);
+					switch (rando) {
+					case 1:
+						movementDir = 1;
+						break;
+					case 2:
+						movementDir = 2;
+						break;
+					}
+				}
+				if (currentSnakeTile == 22) {
+					movementDir = 2;
+				} 
+				if (currentSnakeTile == 28) {
+					movementDir = 1;
+				}
 			}
 		}
 	}

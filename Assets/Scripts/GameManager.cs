@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 	public AudioClip endMusic;
 	public AudioClip teleportMusic;
 	public AudioClip startMusic;
+	public AudioClip snakeJump;
 	public AudioSource audioMain;
 
 	//Current Player Gameobject
