@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: f66e83534109e7d4da72d956904adcf4
-timeCreated: 1486008532
-licenseType: Free
+timeCreated: 1486047272
+licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: 60496_0
@@ -67,6 +67,12 @@ TextureImporter:
     21300120: 60496_60
     21300122: 60496_61
     21300124: 60496_62
+    21300126: 60496_63
+    21300128: 60496_64
+    21300130: 60496_65
+    21300132: 60496_66
+    21300134: 60496_67
+    21300136: 60496_68
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -929,7 +935,46 @@ TextureImporter:
       name: 60496_61
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_63
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_65
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_66
+      rect:
+        serializedVersion: 2
+        x: 64
         y: 256
         width: 16
         height: 16
@@ -942,7 +987,46 @@ TextureImporter:
       name: 60496_62
       rect:
         serializedVersion: 2
-        x: 97
+        x: 80
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_64
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_67
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 60496_68
+      rect:
+        serializedVersion: 2
+        x: 112
         y: 272
         width: 16
         height: 16

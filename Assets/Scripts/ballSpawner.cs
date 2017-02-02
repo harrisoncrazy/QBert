@@ -20,8 +20,15 @@ public class ballSpawner : MonoBehaviour {
 	public Sprite purpleBall;
 	private bool isSnakeSpawned = false;
 
+	//Ugg and wrongway values
 	public bool isWrongWay = false;
 	private bool snakeWrongSpawned = false;
+
+	public GameObject wrongwaySpawnPoint;
+	public GameObject uggSpawnPoint;
+
+	public GameObject wrongwayPrefab;
+	public GameObject uggPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -36,6 +43,23 @@ public class ballSpawner : MonoBehaviour {
 
 		if (GameManager.Instance.isEnding == false) {
 			if (GameManager.Instance.isFalling == false) {
+				//SPAWNING UGG AND WRONGWAY
+				if (isWrongWay == true) {
+					realSpawnDelay -= Time.deltaTime;
+
+					if (realSpawnDelay <= 0) {
+						int rando = Random.Range (1, 3);
+						if (rando == 1) {//spawning wrong way
+							wrongWay way = ((GameObject)Instantiate (wrongwayPrefab, wrongwaySpawnPoint.transform)).GetComponent<wrongWay> ();
+						} else if (rando == 2) {//spawning ugg
+							uggWay uggWay = ((GameObject)Instantiate (uggPrefab, uggSpawnPoint.transform)).GetComponent<uggWay> ();
+						}
+
+						realSpawnDelay = spawnDelay;
+					}
+				}
+
+				//SPAWNING RED BALLS AND SNAKES
 				if (snakeWrongSpawned == false) {
 					realSpawnDelay -= Time.deltaTime;
 	
@@ -49,7 +73,7 @@ public class ballSpawner : MonoBehaviour {
 								if (isWrongWay == true) {//if level 3, allows spawning of snake
 									rando2 = 1;
 								}
-								if (rando2 <= 2) {
+								if (rando2 <= 2) {//randomly decides to spawn a snake ball
 									ball.isSnake = true;
 									ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
 									isSnakeSpawned = true;
