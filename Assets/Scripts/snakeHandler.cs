@@ -251,40 +251,32 @@ public class snakeHandler : MonoBehaviour {
 		}
 
 		if (currentSnakeRow == currentPlayerRow) {
-			if (currentSnakeRow < 7) {
-				int rando = Random.Range (1, 5);
-				switch (rando) {
-				case 1:
+			if (movementIndex.upLeftMoveEnabled == true && movementIndex.upRightMoveEnabled == false) { //if right up movement is disabled
+				movementDir = 1;
+			} else if (movementIndex.upLeftMoveEnabled == false && movementIndex.upRightMoveEnabled == true) {//if left up movement is disabled
+				movementDir = 2;
+			} else if (movementIndex.upLeftMoveEnabled == true && movementIndex.upRightMoveEnabled == true) {//if both movement avenues are avalible
+				int rando = Random.Range (1, 3);
+				if (rando == 1) {
 					movementDir = 1;
-					break;
-				case 2:
+				}
+				if (rando == 2) {
 					movementDir = 2;
-					break;
-				case 3:
+				}
+
+			} else if (movementIndex.downLeftMoveEnabled == true && movementIndex.downRightMoveEnabled == false) { //if right up movement is disabled
+				movementDir = 3;
+			} else if (movementIndex.downLeftMoveEnabled == false && movementIndex.downRightMoveEnabled == true) {//if left up movement is disabled
+				movementDir = 4;
+			} else if (movementIndex.downLeftMoveEnabled == true && movementIndex.downRightMoveEnabled == true) {//if both movement avenues are avalible
+				int rando = Random.Range (1, 3);
+				if (rando == 1) {
 					movementDir = 3;
-					break;
-				case 4:
+				}
+				if (rando == 2) {
 					movementDir = 4;
-					break;
 				}
-			} else if (currentSnakeRow == 7) {
-				if (currentSnakeTile != 22 || currentSnakeTile != 28) {
-					int rando = Random.Range (1, 3);
-					switch (rando) {
-					case 1:
-						movementDir = 1;
-						break;
-					case 2:
-						movementDir = 2;
-						break;
-					}
-				}
-				if (currentSnakeTile == 22) {
-					movementDir = 2;
-				} 
-				if (currentSnakeTile == 28) {
-					movementDir = 1;
-				}
+			
 			}
 		}
 	}

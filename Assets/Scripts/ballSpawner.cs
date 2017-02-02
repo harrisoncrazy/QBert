@@ -45,7 +45,7 @@ public class ballSpawner : MonoBehaviour {
 							redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
 
 							if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
-								int rando2 = Random.Range (1, 7);
+								int rando2 = Random.Range (1, 5);
 								if (isWrongWay == true) {//if level 3, allows spawning of snake
 									rando2 = 1;
 								}
@@ -69,7 +69,7 @@ public class ballSpawner : MonoBehaviour {
 							redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
 
 							if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
-								int rando2 = Random.Range (1, 7);
+								int rando2 = Random.Range (1, 4);
 								if (isWrongWay == true) {//if level 3, allows spawning of snake
 									rando2 = 1;
 								}
