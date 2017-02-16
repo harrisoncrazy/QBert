@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<playerHandler> ().currentTile = 5;
 		player.GetComponent<playerHandler> ().currentRow = 3;
 		player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
-
+		currentPlayer = player;
 	}
 
 	void Awake() {
@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour {
 			player.GetComponent<playerHandler> ().currentTile = 5;
 			player.GetComponent<playerHandler> ().currentRow = 3;
 			player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
+			currentPlayer = player;
 			isEnding = false;
 			isFalling = false;
 		} else if (totalLives < 0) {
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<playerHandler> ().currentTile = 5;
 		player.GetComponent<playerHandler> ().currentRow = 3;
 		player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
+		currentPlayer = player;
 		isEnding = false;
 	}
 }

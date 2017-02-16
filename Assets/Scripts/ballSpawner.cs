@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ballSpawner : MonoBehaviour {
 
+	public static ballSpawner Instance;
+
 	public GameObject leftSpawner;
 	public GameObject rightSpawner;
 
@@ -18,7 +20,7 @@ public class ballSpawner : MonoBehaviour {
 
 	//snake variables
 	public Sprite purpleBall;
-	private bool isSnakeSpawned = false;
+	public bool isSnakeSpawned = false;
 
 	//Ugg and wrongway values
 	public bool isWrongWay = false;
@@ -32,6 +34,7 @@ public class ballSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Instance = this;
 		realSpawnDelay = spawnDelay;
 	}
 	

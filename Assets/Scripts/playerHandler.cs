@@ -51,6 +51,10 @@ public class playerHandler : MonoBehaviour {
 
 	private float BezierTime = 0;
 
+	public int lastTeleTile;
+	public int lastTeleRow;
+	public bool leftPlaftform = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -173,6 +177,9 @@ public class playerHandler : MonoBehaviour {
 							}
 						}
 						if (movementTest.leftTeleporter == true) { //if Hopping into a teleporter
+							lastTeleTile = currentTile;
+							lastTeleRow = currentRow;
+							leftPlaftform = true;
 							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
 							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
 							jumpFace = 1;
@@ -235,6 +242,9 @@ public class playerHandler : MonoBehaviour {
 							}
 						} 
 						if (movementTest.rightTeleporter == true) {
+							lastTeleTile = currentTile;
+							lastTeleRow = currentRow;
+							leftPlaftform = false;
 							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
 							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
 							jumpFace = 2;

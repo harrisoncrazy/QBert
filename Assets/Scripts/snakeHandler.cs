@@ -51,6 +51,13 @@ public class snakeHandler : MonoBehaviour {
 	public Sprite botLeftJump;
 	public Sprite botRightJump;
 
+	//deciding on going left or right
+	private float distToPlayer;
+	private bool movingLeft = false;
+
+	//following platform values
+	private bool isAtPlatformTile = false;
+
 	// Use this for initialization
 	void Start () {
 		mainSprite = gameObject.GetComponent<SpriteRenderer> ();
@@ -58,7 +65,14 @@ public class snakeHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		float playerX = GameManager.Instance.currentPlayer.transform.position.x;
+		float snakeX = this.transform.position.x;
 
+		if (playerX < snakeX) {
+			movingLeft = true;
+		} else if (playerX > snakeX) {
+			movingLeft = false;
+		}
 
 		/*
 		if (currentSnakeTile <= 28 && currentSnakeTile > 21) {
@@ -85,115 +99,174 @@ public class snakeHandler : MonoBehaviour {
 
 		if (GameManager.Instance.isEnding == false) {
 			if (GameManager.Instance.isFalling == false) {
-				if (isMoving == true) {
-					curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
-					curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
-					transform.position = new Vector3 (curveX, curveY, 0);
+				if (isAtPlatformTile == false) {
+					if (isMoving == true) {
+						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
+						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
+						transform.position = new Vector3 (curveX, curveY, 0);
 
-					BezierTime = BezierTime + Time.deltaTime * 2f;
+						BezierTime = BezierTime + Time.deltaTime * 2f;
 
-					if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-						if (movementDir == 1) {
-							mainSprite.sprite = topLeftIdle;
-						} else if (movementDir == 2) {
-							mainSprite.sprite = topRightIdle;
-						} else if (movementDir == 3) {
-							mainSprite.sprite = botLeftIdle;
-						} else if (movementDir == 4) {
-							mainSprite.sprite = botRightIdle;
+						if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
+							if (movementDir == 1) {
+								mainSprite.sprite = topLeftIdle;
+							} else if (movementDir == 2) {
+								mainSprite.sprite = topRightIdle;
+							} else if (movementDir == 3) {
+								mainSprite.sprite = botLeftIdle;
+							} else if (movementDir == 4) {
+								mainSprite.sprite = botRightIdle;
+							}
+						}
+
+						if (BezierTime >= 1) { //end of the jump
+							BezierTime = 0;
+							isMoving = false;
+							transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+							mainSprite.sortingOrder = currentSnakeRow + 1;
+
+							if (currentPlayerTile == currentSnakeTile && playerHandler.Instance.isAtTeleporter == true) {
+								isAtPlatformTile = true;
+								if (playerHandler.Instance.leftPlaftform == true) {
+									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+									mainSprite.sprite = topLeftIdle;
+
+									startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+									startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+									controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+									controlPointY = startPointY + 0.5f;
+
+									endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x - 0.15f; //the final destination tile
+									endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y - 0.21f;
+									delay = 0.5f;
+								} else {
+									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+									mainSprite.sprite = topRightIdle;
+
+									startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+									startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+									controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+									controlPointY = startPointY + 0.5f;
+
+									endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x + 0.15f; //the final destination tile
+									endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y - 0.21f;
+									delay = 0.5f;
+								}
+							}
+						}
+					}
+					if (isMoving == false) {
+						delay -= Time.deltaTime;
+
+						if (delay <= 0) {
+							PickRoute ();
+							switch (movementDir) {
+							case 1:
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+								mainSprite.sprite = topLeftJump;
+								startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								currentSnakeTile = currentSnakeTile - currentSnakeRow; //changing to the next tile based on math
+								currentSnakeRow--;
+
+								endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								isMoving = true;
+								break;
+							case 2:
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+								mainSprite.sprite = topRightJump;
+								startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								currentSnakeTile = currentSnakeTile - (currentSnakeRow - 1);
+								currentSnakeRow--;
+
+								endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								isMoving = true;
+								break;
+							case 3:
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+								mainSprite.sprite = botLeftJump;
+								startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								currentSnakeTile = currentSnakeTile + currentSnakeRow; //changing to the next tile based on math
+								currentSnakeRow++;
+
+								endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								isMoving = true;
+								break;
+							case 4:
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+								mainSprite.sprite = botRightJump;
+								startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								currentSnakeTile = currentSnakeTile + (currentSnakeRow + 1);
+								currentSnakeRow++;
+
+								endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
+
+								isMoving = true;
+								break;
+							}
+							delay = 0.5f;
 						}
 					}
 
-					if (BezierTime >= 1) { //end of the jump
-						BezierTime = 0;
-						isMoving = false;
-						transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
-						mainSprite.sortingOrder = currentSnakeRow + 1;
+
+					if (playerHandler.Instance.isAtTeleporter == false) {
+						currentPlayerTile = playerHandler.Instance.currentTile;
+						currentPlayerRow = playerHandler.Instance.currentRow;
+					} else if (playerHandler.Instance.isAtTeleporter == true) {
+						currentPlayerTile = playerHandler.Instance.lastTeleTile;
+						currentPlayerRow = playerHandler.Instance.lastTeleRow;
 					}
-				}
-				if (isMoving == false) {
+
+				} else if (isAtPlatformTile == true) {
 					delay -= Time.deltaTime;
 
 					if (delay <= 0) {
-						PickRoute ();
-						switch (movementDir) {
-						case 1:
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+						if (playerHandler.Instance.leftPlaftform == true) {
 							mainSprite.sprite = topLeftJump;
-							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							currentSnakeTile = currentSnakeTile - currentSnakeRow; //changing to the next tile based on math
-							currentSnakeRow--;
-
-							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							isMoving = true;
-							break;
-						case 2:
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
+						} else {
 							mainSprite.sprite = topRightJump;
-							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							currentSnakeTile = currentSnakeTile - (currentSnakeRow - 1);
-							currentSnakeRow--;
-
-							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							isMoving = true;
-							break;
-						case 3:
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
-							mainSprite.sprite = botLeftJump;
-							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							currentSnakeTile = currentSnakeTile + currentSnakeRow; //changing to the next tile based on math
-							currentSnakeRow++;
-
-							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							isMoving = true;
-							break;
-						case 4:
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.snakeJump, 0.7f);
-							mainSprite.sprite = botRightJump;
-							startPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							currentSnakeTile = currentSnakeTile + (currentSnakeRow + 1);
-							currentSnakeRow++;
-
-							endPointX = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.21f;
-
-							isMoving = true;
-							break;
 						}
-						delay = 0.5f;
+						mainSprite.sortingOrder = currentSnakeRow - 1;
+						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
+						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
+						transform.position = new Vector3 (curveX, curveY, 0);
+
+						BezierTime = BezierTime + Time.deltaTime * 2f;
+
+						if (BezierTime >= 1) {
+							transform.position = Vector3.MoveTowards (transform.position, new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
+							StartCoroutine ("destroySelf");
+						}
 					}
 				}
-
-
-				//transform.position = new Vector3 (GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.x, GameObject.Find ("tile" + currentSnakeTile + "Base").transform.position.y + 0.15f, 0); //setting exact point
-				currentPlayerTile = playerHandler.Instance.currentTile;
-				currentPlayerRow = playerHandler.Instance.currentRow;
 			}
 		}
 	}
@@ -216,10 +289,10 @@ public class snakeHandler : MonoBehaviour {
 					movementDir = 2;
 				} else {
 					int rando = Random.Range (1, 3);
-					if (rando == 1) {
+					if (movingLeft == true) {
 						movementDir = 1;
 					}
-					if (rando == 2) {
+					if (movingLeft == false) {
 						movementDir = 2;
 					}
 				}
@@ -240,10 +313,10 @@ public class snakeHandler : MonoBehaviour {
 					movementDir = 4;
 				} else {
 					int rando = Random.Range (1, 3);
-					if (rando == 1) {
+					if (movingLeft == true) {
 						movementDir = 3;
 					}
-					if (rando == 2) {
+					if (movingLeft == false) {
 						movementDir = 4;
 					}
 				}
@@ -257,10 +330,10 @@ public class snakeHandler : MonoBehaviour {
 				movementDir = 2;
 			} else if (movementIndex.upLeftMoveEnabled == true && movementIndex.upRightMoveEnabled == true) {//if both movement avenues are avalible
 				int rando = Random.Range (1, 3);
-				if (rando == 1) {
+				if (movingLeft == true) {
 					movementDir = 1;
 				}
-				if (rando == 2) {
+				if (movingLeft == false) {
 					movementDir = 2;
 				}
 
@@ -270,14 +343,20 @@ public class snakeHandler : MonoBehaviour {
 				movementDir = 4;
 			} else if (movementIndex.downLeftMoveEnabled == true && movementIndex.downRightMoveEnabled == true) {//if both movement avenues are avalible
 				int rando = Random.Range (1, 3);
-				if (rando == 1) {
+				if (movingLeft == true) {
 					movementDir = 3;
 				}
-				if (rando == 2) {
+				if (movingLeft == false) {
 					movementDir = 4;
 				}
 			
 			}
 		}
+	}
+
+	IEnumerator destroySelf() {
+		yield return new WaitForSeconds (1.0f);
+		ballSpawner.Instance.isSnakeSpawned = false;
+		Destroy (this.gameObject);
 	}
 }
