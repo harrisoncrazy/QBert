@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager Instance;
 
+	private bool isPaused = false;
+	private GameObject pauseScreen;
+
 	public int totalLives;
 
 	public int totalConvertedTiles = 0;
@@ -50,6 +53,9 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<playerHandler> ().currentRow = 3;
 		player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
 		currentPlayer = player;
+
+		pauseScreen = GameObject.Find ("PauseMenu");
+		pauseScreen.SetActive (false);
 	}
 
 	void Awake() {
@@ -72,6 +78,18 @@ public class GameManager : MonoBehaviour {
 				}
 
 				StartCoroutine ("WinGame");
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if (isPaused == false) {
+				isPaused = true;
+				pauseScreen.SetActive (true);
+				Time.timeScale = 0;
+			} else {
+				isPaused = false;
+				pauseScreen.SetActive (false);
+				Time.timeScale = 1;
 			}
 		}
 	}
@@ -121,6 +139,9 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator SpawnPlayer() {
 		yield return new WaitForSeconds (0.5f);
+
+		pauseScreen = GameObject.Find ("PauseMenu");
+		pauseScreen.SetActive (false);
 
 		GameObject player = Instantiate (playerPrefab, transform.position, Quaternion.identity);
 		player.GetComponent<playerHandler> ().currentTile = 5;

@@ -135,7 +135,7 @@ public class playerHandler : MonoBehaviour {
 			}
 			if (isMoving == false) { //if the tile isnt currently moving 
 				if (GameManager.Instance.isEnding == false) {//if the game isnt currently ending
-					if (Input.GetKeyDown (KeyCode.Q)) { //moving up and left
+					if (Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown(KeyCode.Keypad7)) { //moving up and left
 						CheckTileMovement ();//checking what tiles the player is able to jump too
 						if (movementTest.leftTeleporter != true) { //testing if a teleporter is accessible
 							if (movementTest.upLeftMoveEnabled == true) {
@@ -200,7 +200,7 @@ public class playerHandler : MonoBehaviour {
 						}
 					}
 
-					if (Input.GetKeyDown (KeyCode.E)) { //moving up and right
+					if (Input.GetKeyDown (KeyCode.E) || Input.GetKeyDown(KeyCode.Keypad9)) { //moving up and right
 						CheckTileMovement ();
 						if (movementTest.rightTeleporter != true) {
 							if (movementTest.upRightMoveEnabled == true) {
@@ -263,7 +263,7 @@ public class playerHandler : MonoBehaviour {
 							isMoving = true;
 						}
 					}
-					if (Input.GetKeyDown (KeyCode.Z)) { //moving down and left
+					if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown(KeyCode.Keypad1)) { //moving down and left
 						CheckTileMovement ();
 						if (movementTest.downLeftMoveEnabled == true) {
 							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
@@ -301,7 +301,7 @@ public class playerHandler : MonoBehaviour {
 							GameManager.Instance.StartCoroutine ("EndGame");
 						}
 					}
-					if (Input.GetKeyDown (KeyCode.C)) { //moving down and right
+					if (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown(KeyCode.Keypad3)) { //moving down and right
 						CheckTileMovement ();
 						if (movementTest.downRightMoveEnabled == true) {
 							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
