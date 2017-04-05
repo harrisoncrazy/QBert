@@ -2680,6 +2680,8 @@ MonoBehaviour:
   totalScore: 0
   inputDelay: 1
   isFalling: 0
+  isDying: 0
+  ballGrabbed: 0
   isEnding: 0
   isWinning: 0
   isGameOver: 0
@@ -2690,6 +2692,9 @@ MonoBehaviour:
   teleportMusic: {fileID: 8300000, guid: ab926090e674a4e4c8376771ec00a827, type: 3}
   startMusic: {fileID: 8300000, guid: 8d84399093219ce4ea10200fcaf9fe43, type: 3}
   snakeJump: {fileID: 0}
+  QBertCurse: {fileID: 0}
+  ballPickup: {fileID: 0}
+  snakeFall: {fileID: 0}
   audioMain: {fileID: 0}
   playerPrefab: {fileID: 1939833871414736, guid: 1db58a81a6c6ea547a7e8e4d9bf1591c,
     type: 2}

@@ -15,3 +15,5 @@ EditorBuildSettings:
     path: Assets/Scenes/level3.unity
   - enabled: 1
     path: Assets/Scenes/highscoreScreen.unity
+  - enabled: 1
+    path: Assets/Scenes/addHighscore.unity

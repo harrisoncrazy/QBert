@@ -24,6 +24,8 @@ public class mainMenuHandler : MonoBehaviour {
 
 	public void Exit() {
 		Time.timeScale = 1;
+		HighscoreManager.Instance.unloadHighscoreList (highscoreHolder.Instance.finalHighscoreList);
+		TextAssetManager.ListToText (highscoreHolder.Instance.highscores);
 		Application.Quit ();
 	}
 }

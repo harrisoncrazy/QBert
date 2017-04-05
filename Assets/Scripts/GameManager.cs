@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour {
 	public bool inputDelay = true;
 
 	public bool isFalling = false;
+	public bool isDying = false;
+	public bool ballGrabbed = false;
 	public bool isEnding = false;
 	public bool isWinning = false;
 	public bool isGameOver = false;
@@ -33,6 +35,9 @@ public class GameManager : MonoBehaviour {
 	public AudioClip teleportMusic;
 	public AudioClip startMusic;
 	public AudioClip snakeJump;
+	public AudioClip QBertCurse;
+	public AudioClip ballPickup;
+	public AudioClip snakeFall;
 	public AudioSource audioMain;
 
 	//Current Player Gameobject
@@ -57,9 +62,13 @@ public class GameManager : MonoBehaviour {
 		pauseScreen = GameObject.Find ("PauseMenu");
 		pauseScreen.SetActive (false);
 	}
-
+		
 	void Awake() {
-		DontDestroyOnLoad(transform.gameObject);
+		if (GameObject.FindGameObjectsWithTag ("GameManager").Length > 1) {
+			Destroy (this.gameObject);
+		} else {
+			DontDestroyOnLoad (transform.gameObject);
+		}
 	}
 	
 	// Update is called once per frame
@@ -106,15 +115,23 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds (3.0f);
 		if (totalLives > 0) {
 			totalLives--;
+			isEnding = false;
+			isFalling = false;
+			isDying = false;
 			GameObject player = Instantiate (playerPrefab, transform.position, Quaternion.identity);
 			player.GetComponent<playerHandler> ().currentTile = 5;
 			player.GetComponent<playerHandler> ().currentRow = 3;
 			player.transform.position = new Vector3 (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.x, (GameObject.Find ("tile" + player.GetComponent<playerHandler> ().currentTile + "Base").transform.position.y + 0.15f));
 			currentPlayer = player;
-			isEnding = false;
-			isFalling = false;
-		} else if (totalLives < 0) {
+		} else if (totalLives <= 0) {
 			isGameOver = true;
+
+			if (totalScore > highscoreHolder.Instance.finalHighscoreList [9].score) {
+				Application.LoadLevel ("addHighscore");
+			} else {
+				Destroy(GameObject.Find("GameManager"));
+				Application.LoadLevel ("mainMenu");
+			}
 		}
 		//SceneManager.LoadScene ("level1");
 	}
@@ -122,11 +139,15 @@ public class GameManager : MonoBehaviour {
 	IEnumerator WinGame() {
 		yield return new WaitForSeconds (3.0f);
 		levelNum++;
+		if (levelNum > 3) {
+			levelNum = 1;
+		}
 		SceneManager.LoadScene ("level" + levelNum);
 		totalConvertedTiles = 0;
 		isWinning = false;
 		isEnding = false;
 		isFalling = false;
+		isDying = false;
 
 		StartCoroutine ("SpawnPlayer");
 		/*

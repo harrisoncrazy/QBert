@@ -46,75 +46,91 @@ public class ballSpawner : MonoBehaviour {
 
 		if (GameManager.Instance.isEnding == false) {
 			if (GameManager.Instance.isFalling == false) {
-				//SPAWNING UGG AND WRONGWAY
-				if (isWrongWay == true) {
-					realSpawnDelay -= Time.deltaTime;
+				if (GameManager.Instance.isDying == false) {
+					if (GameManager.Instance.ballGrabbed == false) {
+						//SPAWNING UGG AND WRONGWAY
+						if (isWrongWay == true) {
+							realSpawnDelay -= Time.deltaTime;
 
-					if (realSpawnDelay <= 0) {
-						int rando = Random.Range (1, 3);
-						if (rando == 1) {//spawning wrong way
-							wrongWay way = ((GameObject)Instantiate (wrongwayPrefab, wrongwaySpawnPoint.transform)).GetComponent<wrongWay> ();
-						} else if (rando == 2) {//spawning ugg
-							uggWay uggWay = ((GameObject)Instantiate (uggPrefab, uggSpawnPoint.transform)).GetComponent<uggWay> ();
+							if (realSpawnDelay <= 0) {
+								int rando = Random.Range (1, 3);
+								if (rando == 1) {//spawning wrong way
+									wrongWay way = ((GameObject)Instantiate (wrongwayPrefab, wrongwaySpawnPoint.transform)).GetComponent<wrongWay> ();
+								} else if (rando == 2) {//spawning ugg
+									uggWay uggWay = ((GameObject)Instantiate (uggPrefab, uggSpawnPoint.transform)).GetComponent<uggWay> ();
+								}
+
+								realSpawnDelay = spawnDelay;
+							}
 						}
 
-						realSpawnDelay = spawnDelay;
-					}
-				}
-
-				//SPAWNING RED BALLS AND SNAKES
-				if (snakeWrongSpawned == false) {
-					realSpawnDelay -= Time.deltaTime;
+						//SPAWNING RED BALLS AND SNAKES
+						if (snakeWrongSpawned == false) {
+							realSpawnDelay -= Time.deltaTime;
 	
-					if (realSpawnDelay <= 0) {
-						int rando = Random.Range (1, 3);
-						if (rando == 1) {
-							redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
+							if (realSpawnDelay <= 0) {
+								int rando = Random.Range (1, 3);
+								if (rando == 1) {
+									redBall ball = ((GameObject)Instantiate (redBaller, leftSpawner.transform)).GetComponent<redBall> ();
 
-							if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
-								int rando2 = Random.Range (1, 5);
-								if (isWrongWay == true) {//if level 3, allows spawning of snake
-									rando2 = 1;
-								}
-								if (rando2 <= 2) {//randomly decides to spawn a snake ball
-									ball.isSnake = true;
-									ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
-									isSnakeSpawned = true;
-								}
-							}
+									int greenBall = Random.Range (1, 11);
+									if (greenBall <= 3) {
+										ball.isGreen = true;
+										ball.GetComponent<SpriteRenderer> ().sprite = ball.greenBallJump;
+									}
 
-							ball.transform.position = new Vector3 (-0.15f, 0.6f);
-							ball.currentTile = 2;
-							ball.currentRow = 2;
-							realSpawnDelay = spawnDelay;
-							cooldownRedCounter++;
-							if (cooldownRedCounter == 3) {
-								//spawnDelay -= 0.5f;
-								cooldownRedCounter = 0;
-							}
-						} else if (rando == 2) {
-							redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
+									if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
+										int rando2 = Random.Range (1, 5);
+										if (isWrongWay == true) {//if level 3, allows spawning of snake
+											rando2 = 1;
+										}
+										if (rando2 <= 2) {//randomly decides to spawn a snake ball
+											ball.isSnake = true;
+											ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
+											isSnakeSpawned = true;
+										}
+									}
 
-							if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
-								int rando2 = Random.Range (1, 4);
-								if (isWrongWay == true) {//if level 3, allows spawning of snake
-									rando2 = 1;
-								}
-								if (rando2 <= 2) {
-									ball.isSnake = true;
-									ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
-									isSnakeSpawned = true;
-								}
-							}
+									ball.transform.position = new Vector3 (-0.15f, 0.6f);
+									ball.currentTile = 2;
+									ball.currentRow = 2;
+									realSpawnDelay = spawnDelay;
+									cooldownRedCounter++;
+									if (cooldownRedCounter == 3) {
+										//spawnDelay -= 0.5f;
+										cooldownRedCounter = 0;
+									}
+								} else if (rando == 2) {
+									redBall ball = ((GameObject)Instantiate (redBaller, rightSpawner.transform)).GetComponent<redBall> ();
 
-							ball.transform.position = new Vector3 (0.15f, 0.6f);
-							ball.currentTile = 3;
-							ball.currentRow = 2;
-							realSpawnDelay = spawnDelay;
-							cooldownRedCounter++;
-							if (cooldownRedCounter == 3) {
-								//spawnDelay -= 0.5f;
-								cooldownRedCounter = 0;
+									int greenBall = Random.Range (1, 11);
+									if (greenBall <= 3) {
+										ball.isGreen = true;
+										ball.GetComponent<SpriteRenderer> ().sprite = ball.greenBallJump;
+									}
+
+									if (isSnakeSpawned == false) {//testing to decide if its a purple ball or not
+										int rando2 = Random.Range (1, 4);
+										if (isWrongWay == true) {//if level 3, allows spawning of snake
+											rando2 = 1;
+										}
+										if (rando2 <= 2) {
+											ball.isSnake = true;
+											ball.GetComponent<SpriteRenderer> ().sprite = purpleBall;
+											isSnakeSpawned = true;
+										}
+									}
+
+									ball.transform.position = new Vector3 (0.15f, 0.6f);
+									ball.currentTile = 3;
+									ball.currentRow = 2;
+									realSpawnDelay = spawnDelay;
+									cooldownRedCounter++;
+									if (cooldownRedCounter == 3) {
+										//spawnDelay -= 0.5f;
+										cooldownRedCounter = 0;
+									}
+								}
 							}
 						}
 					}

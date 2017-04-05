@@ -68,98 +68,80 @@ public class playerHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (GameManager.Instance.inputDelay == false) {
-			if (isMoving == true) { //bezier curve for movement
-				if (GameManager.Instance.isEnding == false) {
-					if (startingTeleport != true) {
-						curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
-						curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
-						transform.position = new Vector3 (curveX, curveY, 0);
+			if (GameManager.Instance.isDying == false) {
+				if (isMoving == true) { //bezier curve for movement
+					if (GameManager.Instance.isEnding == false) {
+						if (startingTeleport != true) {
+							curveX = (((1 - BezierTime) * (1 - BezierTime)) * startPointX) + (2 * BezierTime * (1 - BezierTime) * controlPointX) + ((BezierTime * BezierTime) * endPointX);
+							curveY = (((1 - BezierTime) * (1 - BezierTime)) * startPointY) + (2 * BezierTime * (1 - BezierTime) * controlPointY) + ((BezierTime * BezierTime) * endPointY);
+							transform.position = new Vector3 (curveX, curveY, 0);
 
-						BezierTime = BezierTime + Time.deltaTime * 2f;
+							BezierTime = BezierTime + Time.deltaTime * 2f;
 
-						if (isAtTeleporter != true) {
-							if (GameManager.Instance.isFalling == false) {
-								if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
-									if (jumpFace == 1) {
-										mainSprite.sprite = topLeftIdle;
-									} else if (jumpFace == 2) {
-										mainSprite.sprite = topRightIdle;
-									} else if (jumpFace == 3) {
-										mainSprite.sprite = botLeftIdle;
-									} else if (jumpFace == 4) {
-										mainSprite.sprite = botRightIdle;
+							if (isAtTeleporter != true) {
+								if (GameManager.Instance.isFalling == false) {
+									if (BezierTime >= 0.95) {//setting the sprite to landing slightly before it actually finishes
+										if (jumpFace == 1) {
+											mainSprite.sprite = topLeftIdle;
+										} else if (jumpFace == 2) {
+											mainSprite.sprite = topRightIdle;
+										} else if (jumpFace == 3) {
+											mainSprite.sprite = botLeftIdle;
+										} else if (jumpFace == 4) {
+											mainSprite.sprite = botRightIdle;
+										}
+									}
+
+									if (BezierTime >= 1) { //end of the jump
+										BezierTime = 0;
+										isMoving = false;
+										transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+										GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 									}
 								}
 
-								if (BezierTime >= 1) { //end of the jump
-									BezierTime = 0;
+								if (GameManager.Instance.isFalling == true) {
+									if (BezierTime >= 1) {
+										transform.position = Vector3.MoveTowards (transform.position, new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
+										StartCoroutine ("destroySelf");
+									}
+								}
+							}
+						}
+						if (isAtTeleporter == true) {
+							if (stoppedTeleport != true) {
+								if (BezierTime >= 1) {
+									transform.position = new Vector3 (teleporterPlatform.transform.position.x, teleporterPlatform.transform.position.y + 0.075f);
+									if (startingTeleport == false) {
+										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.teleportMusic, 0.7f);
+										startingTeleport = true;
+									}
+								}
+							}
+							if (stoppedTeleport == true) {
+								transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.15f), 1f * Time.deltaTime); //falling down
+								if (transform.position == new Vector3 (topTile.position.x, topTile.position.y + 0.15f)) {//once fallen down to the tile, ending the teleport sequence
+									startingTeleport = false;
+									stoppedTeleport = false;
+									isAtTeleporter = false;
 									isMoving = false;
-									transform.position = new Vector3 (endPointX, endPointY, 0); //setting the player to an exact final value
+									mainSprite.sortingOrder = 2;
+									BezierTime = 0;
+									TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0; //destroying the teleport in the array
 									GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 								}
-							}
-
-							if (GameManager.Instance.isFalling == true) {
-								if (BezierTime >= 1) {
-									transform.position = Vector3.MoveTowards (transform.position, new Vector3 (endPointX, endPointY - 1.0f), 1f * Time.deltaTime); //falling down
-									StartCoroutine("destroySelf");
-								}
-							}
-						}
-					}
-					if (isAtTeleporter == true) {
-						if (stoppedTeleport != true) {
-							if (BezierTime >= 1) {
-								transform.position = new Vector3 (teleporterPlatform.transform.position.x, teleporterPlatform.transform.position.y + 0.075f);
-								if (startingTeleport == false) {
-									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.teleportMusic, 0.7f);
-									startingTeleport = true;
-								}
-							}
-						}
-						if (stoppedTeleport == true) {
-							transform.position = Vector3.MoveTowards (transform.position, new Vector3 (topTile.position.x, topTile.position.y + 0.15f), 1f * Time.deltaTime); //falling down
-							if (transform.position == new Vector3 (topTile.position.x, topTile.position.y + 0.15f)) {//once fallen down to the tile, ending the teleport sequence
-								startingTeleport = false;
-								stoppedTeleport = false;
-								isAtTeleporter = false;
-								isMoving = false;
-								mainSprite.sortingOrder = 2;
-								BezierTime = 0;
-								TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0; //destroying the teleport in the array
-								GameObject.Find ("tile" + currentTile + "Base").GetComponent<tileHandler> ().changeTile (); //changing the landed tile
 							}
 						}
 					}
 				}
-			}
-			if (isMoving == false) { //if the tile isnt currently moving 
-				if (GameManager.Instance.isEnding == false) {//if the game isnt currently ending
-					if (Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown(KeyCode.Keypad7)) { //moving up and left
-						CheckTileMovement ();//checking what tiles the player is able to jump too
-						if (movementTest.leftTeleporter != true) { //testing if a teleporter is accessible
-							if (movementTest.upLeftMoveEnabled == true) {
-								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
-								jumpFace = 1; //int for reseting to proper idle sprite after jump is done
-								mainSprite.sprite = topLeftJump;
-								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-								controlPointY = startPointY + 0.5f;
-
-								currentTile = currentTile - currentRow; //changing to the next tile based on math
-								currentRow--;
-
-								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x; //the final destination tile
-								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-								mainSprite.sortingOrder = currentRow + 1;
-								isMoving = true;
-							} else { //If jumping off the edge
-								if (movementTest.leftTeleporter != true) {
-									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
-									jumpFace = 1;
+				if (isMoving == false) { //if the tile isnt currently moving 
+					if (GameManager.Instance.isEnding == false) {//if the game isnt currently ending
+						if (Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.Keypad7)) { //moving up and left
+							CheckTileMovement ();//checking what tiles the player is able to jump too
+							if (movementTest.leftTeleporter != true) { //testing if a teleporter is accessible
+								if (movementTest.upLeftMoveEnabled == true) {
+									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
+									jumpFace = 1; //int for reseting to proper idle sprite after jump is done
 									mainSprite.sprite = topLeftJump;
 									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -167,54 +149,135 @@ public class playerHandler : MonoBehaviour {
 									controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 									controlPointY = startPointY + 0.5f;
 
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f; //the final destination tile
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-									mainSprite.sortingOrder = currentRow - 1;
+									currentTile = currentTile - currentRow; //changing to the next tile based on math
+									currentRow--;
+
+									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x; //the final destination tile
+									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+									mainSprite.sortingOrder = currentRow + 1;
 									isMoving = true;
-									GameManager.Instance.isFalling = true;
-									GameManager.Instance.StartCoroutine ("EndGame");
+								} else { //If jumping off the edge
+									if (movementTest.leftTeleporter != true) {
+										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
+										jumpFace = 1;
+										mainSprite.sprite = topLeftJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+										controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+										controlPointY = startPointY + 0.5f;
+
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f; //the final destination tile
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
+										mainSprite.sortingOrder = currentRow - 1;
+										isMoving = true;
+										GameManager.Instance.isFalling = true;
+										GameManager.Instance.StartCoroutine ("EndGame");
+									}
 								}
 							}
+							if (movementTest.leftTeleporter == true) { //if Hopping into a teleporter
+								lastTeleTile = currentTile;
+								lastTeleRow = currentRow;
+								leftPlaftform = true;
+								teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
+								jumpFace = 1;
+								mainSprite.sprite = topLeftJump;
+								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								endPointX = teleporterPlatform.transform.position.x; //the final destination tile
+								endPointY = teleporterPlatform.transform.position.y + 0.075f;
+								currentRow = 1;
+								currentTile = 1;
+								TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0;
+								isAtTeleporter = true;
+								isMoving = true;
+							}
 						}
-						if (movementTest.leftTeleporter == true) { //if Hopping into a teleporter
-							lastTeleTile = currentTile;
-							lastTeleRow = currentRow;
-							leftPlaftform = true;
-							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
-							jumpFace = 1;
-							mainSprite.sprite = topLeftJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
+						if (Input.GetKeyDown (KeyCode.E) || Input.GetKeyDown (KeyCode.Keypad9)) { //moving up and right
+							CheckTileMovement ();
+							if (movementTest.rightTeleporter != true) {
+								if (movementTest.upRightMoveEnabled == true) {
+									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
+									jumpFace = 2;
+									mainSprite.sprite = topRightJump;
+									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-							endPointX = teleporterPlatform.transform.position.x; //the final destination tile
-							endPointY = teleporterPlatform.transform.position.y + 0.075f;
-							currentRow = 1;
-							currentTile = 1;
-							TileListCheck.Instance.teleporterTiles [movementTest.teleporterNumber] = 0;
-							isAtTeleporter = true;
-							isMoving = true;
-						}
-					}
+									controlPointX = startPointX;
+									controlPointY = startPointY + 0.5f;
 
-					if (Input.GetKeyDown (KeyCode.E) || Input.GetKeyDown(KeyCode.Keypad9)) { //moving up and right
-						CheckTileMovement ();
-						if (movementTest.rightTeleporter != true) {
-							if (movementTest.upRightMoveEnabled == true) {
+									currentTile = currentTile - (currentRow - 1);
+									currentRow--;
+
+									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+									mainSprite.sortingOrder = currentRow + 1;
+									isMoving = true;
+								} else {//If jumping off the edge
+									if (movementTest.rightTeleporter != true) {
+										GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
+										jumpFace = 2;
+										mainSprite.sprite = topRightJump;
+										startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+										startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+										controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+										controlPointY = startPointY + 0.5f;
+
+										endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f; //the final destination tile
+										endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
+										mainSprite.sortingOrder = currentRow - 1;
+										isMoving = true;
+										GameManager.Instance.isFalling = true;
+										GameManager.Instance.StartCoroutine ("EndGame");
+									}
+								}
+							} 
+							if (movementTest.rightTeleporter == true) {
+								lastTeleTile = currentTile;
+								lastTeleRow = currentRow;
+								leftPlaftform = false;
+								teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
 								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
 								jumpFace = 2;
 								mainSprite.sprite = topRightJump;
 								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-								controlPointX = startPointX;
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
 								controlPointY = startPointY + 0.5f;
 
-								currentTile = currentTile - (currentRow - 1);
-								currentRow--;
+								endPointX = teleporterPlatform.transform.position.x; //the final destination tile
+								endPointY = teleporterPlatform.transform.position.y + 0.075f;
+								currentRow = 1;
+								currentTile = 1;
+								isAtTeleporter = true;
+								isMoving = true;
+							}
+						}
+						if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.Keypad1)) { //moving down and left
+							CheckTileMovement ();
+							if (movementTest.downLeftMoveEnabled == true) {
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
+								jumpFace = 3;
+								mainSprite.sprite = botLeftJump;
+								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+								controlPointX = startPointX;
+								controlPointY = startPointY + 0.25f;
+
+								currentTile = currentTile + currentRow;
+								currentRow++;
 
 								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
 								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
@@ -222,137 +285,115 @@ public class playerHandler : MonoBehaviour {
 								mainSprite.sortingOrder = currentRow + 1;
 								isMoving = true;
 							} else {//If jumping off the edge
-								if (movementTest.rightTeleporter != true) {
-									GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
-									jumpFace = 2;
-									mainSprite.sprite = topRightJump;
-									startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-									startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
+								jumpFace = 3;
+								mainSprite.sprite = botLeftJump;
+								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
 
-									controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-									controlPointY = startPointY + 0.5f;
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
 
-									endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f; //the final destination tile
-									endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-									mainSprite.sortingOrder = currentRow - 1;
-									isMoving = true;
-									GameManager.Instance.isFalling = true;
-									GameManager.Instance.StartCoroutine ("EndGame");
-								}
+								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
+								mainSprite.sortingOrder = currentRow + 1;
+								isMoving = true;
+								GameManager.Instance.isFalling = true;
+								GameManager.Instance.StartCoroutine ("EndGame");
+							}
+						}
+						if (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.Keypad3)) { //moving down and right
+							CheckTileMovement ();
+							if (movementTest.downRightMoveEnabled == true) {
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
+								jumpFace = 4;
+								mainSprite.sprite = botRightJump;
+								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+								controlPointX = startPointX;
+								controlPointY = startPointY + 0.25f;
+
+								currentTile = currentTile + currentRow + 1;
+								currentRow++;
+
+								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+								mainSprite.sortingOrder = currentRow + 1;
+								isMoving = true;
+							} else {//If jumping off the edge
+								GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
+								jumpFace = 4;
+								mainSprite.sprite = botRightJump;
+								startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
+								startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
+
+								controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
+								controlPointY = startPointY + 0.5f;
+
+								endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f; //the final destination tile
+								endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
+								mainSprite.sortingOrder = currentRow + 1;
+								isMoving = true;
+								GameManager.Instance.isFalling = true;
+								GameManager.Instance.StartCoroutine ("EndGame");
 							}
 						} 
-						if (movementTest.rightTeleporter == true) {
-							lastTeleTile = currentTile;
-							lastTeleRow = currentRow;
-							leftPlaftform = false;
-							teleporterPlatform = GameObject.Find ("Platform" + movementTest.teleporterNumber);
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
-							jumpFace = 2;
-							mainSprite.sprite = topRightJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							endPointX = teleporterPlatform.transform.position.x; //the final destination tile
-							endPointY = teleporterPlatform.transform.position.y + 0.075f;
-							currentRow = 1;
-							currentTile = 1;
-							isAtTeleporter = true;
-							isMoving = true;
-						}
 					}
-					if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown(KeyCode.Keypad1)) { //moving down and left
-						CheckTileMovement ();
-						if (movementTest.downLeftMoveEnabled == true) {
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
-							jumpFace = 3;
-							mainSprite.sprite = botLeftJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							controlPointX = startPointX;
-							controlPointY = startPointY + 0.25f;
-
-							currentTile = currentTile + currentRow;
-							currentRow++;
-
-							endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							mainSprite.sortingOrder = currentRow + 1;
-							isMoving = true;
-						} else {//If jumping off the edge
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
-							jumpFace = 3;
-							mainSprite.sprite = botLeftJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x - 0.15f; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-							mainSprite.sortingOrder = currentRow + 1;
-							isMoving = true;
-							GameManager.Instance.isFalling = true;
-							GameManager.Instance.StartCoroutine ("EndGame");
-						}
-					}
-					if (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown(KeyCode.Keypad3)) { //moving down and right
-						CheckTileMovement ();
-						if (movementTest.downRightMoveEnabled == true) {
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertjump, 0.7f);
-							jumpFace = 4;
-							mainSprite.sprite = botRightJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							controlPointX = startPointX;
-							controlPointY = startPointY + 0.25f;
-
-							currentTile = currentTile + currentRow + 1;
-							currentRow++;
-
-							endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							mainSprite.sortingOrder = currentRow + 1;
-							isMoving = true;
-						} else {//If jumping off the edge
-							GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertfall, 0.7f);
-							jumpFace = 4;
-							mainSprite.sprite = botRightJump;
-							startPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x;
-							startPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y + 0.15f;
-
-							controlPointX = startPointX;//curve points for the bezier curve, pics a point slightly above the player to curve the jump
-							controlPointY = startPointY + 0.5f;
-
-							endPointX = GameObject.Find ("tile" + currentTile + "Base").transform.position.x + 0.15f; //the final destination tile
-							endPointY = GameObject.Find ("tile" + currentTile + "Base").transform.position.y - 0.25f;
-							mainSprite.sortingOrder = currentRow + 1;
-							isMoving = true;
-							GameManager.Instance.isFalling = true;
-							GameManager.Instance.StartCoroutine ("EndGame");
-						}
-					} 
 				}
 			}
 		}
 	}
-	/*
+
 	void OnTriggerEnter2D(Collider2D col) {
-		isEnding = true;
-		StartCoroutine ("EndGame");
-	}*/
+		if (col.tag == "Ball") {
+			if (col.GetComponent<redBall> ().currentRow == currentRow) {
+				if (col.GetComponent<redBall> ().isGreen == true) {
+					GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.ballPickup, 0.7f);
+					GameManager.Instance.totalScore += 100;
+					Destroy (col.gameObject);
+					GameManager.Instance.ballGrabbed = true;
+					StartCoroutine ("ballCooldown");
+				} else {
+					GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertCurse, 0.7f);
+					GameManager.Instance.isDying = true;
+					StartCoroutine ("destroySelf");
+					GameManager.Instance.StartCoroutine ("EndGame");
+				}
+			}
+		}
+		if (col.tag == "uggWay") {
+				GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertCurse, 0.7f);
+				GameManager.Instance.isDying = true;
+				StartCoroutine ("destroySelf");
+				GameManager.Instance.StartCoroutine ("EndGame");
+		}
+		if (col.tag == "wrongWay") {
+				GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertCurse, 0.7f);
+				GameManager.Instance.isDying = true;
+				StartCoroutine ("destroySelf");
+				GameManager.Instance.StartCoroutine ("EndGame");
+		}
+		if (col.tag == "snake") {
+			if (col.GetComponent <snakeHandler>().currentSnakeRow == currentRow) {
+				GameManager.Instance.audioMain.PlayOneShot (GameManager.Instance.QBertCurse, 0.7f);
+				GameManager.Instance.isDying = true;
+				StartCoroutine ("destroySelf");
+				GameManager.Instance.StartCoroutine ("EndGame");
+			}
+		}
+	}
 
 
 	IEnumerator destroySelf() {
 		yield return new WaitForSeconds (1.0f);
 		Destroy (this.gameObject);
+	}
+
+	IEnumerator ballCooldown() {
+		yield return new WaitForSeconds (5.0f);
+		GameManager.Instance.ballGrabbed = false;
 	}
 
 	void CheckTileMovement(){
