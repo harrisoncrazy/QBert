@@ -1,7 +1,7 @@
+BadGame
+375
 Harrison
 50
-Null
-0
 Null
 0
 Null
